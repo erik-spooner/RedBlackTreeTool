@@ -1,0 +1,343 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		03CA7D7F27B6E8EB00D1C74F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CA7D7E27B6E8EB00D1C74F /* AppDelegate.swift */; };
+		03CA7D8127B6E8EB00D1C74F /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7D8027B6E8EB00D1C74F /* GameScene.sks */; };
+		03CA7D8327B6E8EB00D1C74F /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7D8227B6E8EB00D1C74F /* Actions.sks */; };
+		03CA7D8527B6E8EB00D1C74F /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CA7D8427B6E8EB00D1C74F /* GameScene.swift */; };
+		03CA7D8727B6E8EB00D1C74F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CA7D8627B6E8EB00D1C74F /* ViewController.swift */; };
+		03CA7D8927B6E8ED00D1C74F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7D8827B6E8ED00D1C74F /* Assets.xcassets */; };
+		03CA7D8C27B6E8EE00D1C74F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7D8A27B6E8EE00D1C74F /* Main.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		03CA7D7B27B6E8EB00D1C74F /* RedBlackTreeTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RedBlackTreeTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		03CA7D7E27B6E8EB00D1C74F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		03CA7D8027B6E8EB00D1C74F /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		03CA7D8227B6E8EB00D1C74F /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
+		03CA7D8427B6E8EB00D1C74F /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		03CA7D8627B6E8EB00D1C74F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		03CA7D8827B6E8ED00D1C74F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		03CA7D8B27B6E8EE00D1C74F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		03CA7D8D27B6E8EE00D1C74F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		03CA7D8E27B6E8EE00D1C74F /* RedBlackTreeTool.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RedBlackTreeTool.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		03CA7D7827B6E8EB00D1C74F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		03CA7D7227B6E8EB00D1C74F = {
+			isa = PBXGroup;
+			children = (
+				03CA7D7D27B6E8EB00D1C74F /* RedBlackTreeTool */,
+				03CA7D7C27B6E8EB00D1C74F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		03CA7D7C27B6E8EB00D1C74F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				03CA7D7B27B6E8EB00D1C74F /* RedBlackTreeTool.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		03CA7D7D27B6E8EB00D1C74F /* RedBlackTreeTool */ = {
+			isa = PBXGroup;
+			children = (
+				03CA7D7E27B6E8EB00D1C74F /* AppDelegate.swift */,
+				03CA7D8027B6E8EB00D1C74F /* GameScene.sks */,
+				03CA7D8227B6E8EB00D1C74F /* Actions.sks */,
+				03CA7D8427B6E8EB00D1C74F /* GameScene.swift */,
+				03CA7D8627B6E8EB00D1C74F /* ViewController.swift */,
+				03CA7D8827B6E8ED00D1C74F /* Assets.xcassets */,
+				03CA7D8A27B6E8EE00D1C74F /* Main.storyboard */,
+				03CA7D8D27B6E8EE00D1C74F /* Info.plist */,
+				03CA7D8E27B6E8EE00D1C74F /* RedBlackTreeTool.entitlements */,
+			);
+			path = RedBlackTreeTool;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		03CA7D7A27B6E8EB00D1C74F /* RedBlackTreeTool */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03CA7D9127B6E8EE00D1C74F /* Build configuration list for PBXNativeTarget "RedBlackTreeTool" */;
+			buildPhases = (
+				03CA7D7727B6E8EB00D1C74F /* Sources */,
+				03CA7D7827B6E8EB00D1C74F /* Frameworks */,
+				03CA7D7927B6E8EB00D1C74F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RedBlackTreeTool;
+			productName = RedBlackTreeTool;
+			productReference = 03CA7D7B27B6E8EB00D1C74F /* RedBlackTreeTool.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		03CA7D7327B6E8EB00D1C74F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1240;
+				LastUpgradeCheck = 1240;
+				TargetAttributes = {
+					03CA7D7A27B6E8EB00D1C74F = {
+						CreatedOnToolsVersion = 12.4;
+					};
+				};
+			};
+			buildConfigurationList = 03CA7D7627B6E8EB00D1C74F /* Build configuration list for PBXProject "RedBlackTreeTool" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 03CA7D7227B6E8EB00D1C74F;
+			productRefGroup = 03CA7D7C27B6E8EB00D1C74F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				03CA7D7A27B6E8EB00D1C74F /* RedBlackTreeTool */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		03CA7D7927B6E8EB00D1C74F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03CA7D8127B6E8EB00D1C74F /* GameScene.sks in Resources */,
+				03CA7D8927B6E8ED00D1C74F /* Assets.xcassets in Resources */,
+				03CA7D8327B6E8EB00D1C74F /* Actions.sks in Resources */,
+				03CA7D8C27B6E8EE00D1C74F /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		03CA7D7727B6E8EB00D1C74F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03CA7D8727B6E8EB00D1C74F /* ViewController.swift in Sources */,
+				03CA7D8527B6E8EB00D1C74F /* GameScene.swift in Sources */,
+				03CA7D7F27B6E8EB00D1C74F /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		03CA7D8A27B6E8EE00D1C74F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				03CA7D8B27B6E8EE00D1C74F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		03CA7D8F27B6E8EE00D1C74F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		03CA7D9027B6E8EE00D1C74F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		03CA7D9227B6E8EE00D1C74F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = RedBlackTreeTool/RedBlackTreeTool.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = RedBlackTreeTool/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Erik-Spooner.RedBlackTreeTool";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		03CA7D9327B6E8EE00D1C74F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = RedBlackTreeTool/RedBlackTreeTool.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = RedBlackTreeTool/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Erik-Spooner.RedBlackTreeTool";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		03CA7D7627B6E8EB00D1C74F /* Build configuration list for PBXProject "RedBlackTreeTool" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03CA7D8F27B6E8EE00D1C74F /* Debug */,
+				03CA7D9027B6E8EE00D1C74F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		03CA7D9127B6E8EE00D1C74F /* Build configuration list for PBXNativeTarget "RedBlackTreeTool" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03CA7D9227B6E8EE00D1C74F /* Debug */,
+				03CA7D9327B6E8EE00D1C74F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 03CA7D7327B6E8EB00D1C74F /* Project object */;
+}
