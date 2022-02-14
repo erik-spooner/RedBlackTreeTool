@@ -7,26 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0381ED9227BA277600380AA1 /* RedBlackTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381ED9127BA277600380AA1 /* RedBlackTree.swift */; };
+		0381ED9827BA287900380AA1 /* TreeScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0381ED9727BA287900380AA1 /* TreeScene.sks */; };
 		03CA7D7F27B6E8EB00D1C74F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CA7D7E27B6E8EB00D1C74F /* AppDelegate.swift */; };
-		03CA7D8127B6E8EB00D1C74F /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7D8027B6E8EB00D1C74F /* GameScene.sks */; };
-		03CA7D8327B6E8EB00D1C74F /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7D8227B6E8EB00D1C74F /* Actions.sks */; };
-		03CA7D8527B6E8EB00D1C74F /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CA7D8427B6E8EB00D1C74F /* GameScene.swift */; };
+		03CA7D8527B6E8EB00D1C74F /* TreeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CA7D8427B6E8EB00D1C74F /* TreeScene.swift */; };
 		03CA7D8727B6E8EB00D1C74F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CA7D8627B6E8EB00D1C74F /* ViewController.swift */; };
-		03CA7D8927B6E8ED00D1C74F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7D8827B6E8ED00D1C74F /* Assets.xcassets */; };
 		03CA7D8C27B6E8EE00D1C74F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7D8A27B6E8EE00D1C74F /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0381ED9127BA277600380AA1 /* RedBlackTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedBlackTree.swift; sourceTree = "<group>"; };
+		0381ED9727BA287900380AA1 /* TreeScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = TreeScene.sks; sourceTree = "<group>"; };
+		0381ED9B27BA28C300380AA1 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03CA7D7B27B6E8EB00D1C74F /* RedBlackTreeTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RedBlackTreeTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03CA7D7E27B6E8EB00D1C74F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		03CA7D8027B6E8EB00D1C74F /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
-		03CA7D8227B6E8EB00D1C74F /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
-		03CA7D8427B6E8EB00D1C74F /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		03CA7D8427B6E8EB00D1C74F /* TreeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeScene.swift; sourceTree = "<group>"; };
 		03CA7D8627B6E8EB00D1C74F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		03CA7D8827B6E8ED00D1C74F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		03CA7D8B27B6E8EE00D1C74F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		03CA7D8D27B6E8EE00D1C74F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		03CA7D8E27B6E8EE00D1C74F /* RedBlackTreeTool.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RedBlackTreeTool.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,14 +57,12 @@
 			isa = PBXGroup;
 			children = (
 				03CA7D7E27B6E8EB00D1C74F /* AppDelegate.swift */,
-				03CA7D8027B6E8EB00D1C74F /* GameScene.sks */,
-				03CA7D8227B6E8EB00D1C74F /* Actions.sks */,
-				03CA7D8427B6E8EB00D1C74F /* GameScene.swift */,
+				03CA7D8427B6E8EB00D1C74F /* TreeScene.swift */,
+				0381ED9127BA277600380AA1 /* RedBlackTree.swift */,
 				03CA7D8627B6E8EB00D1C74F /* ViewController.swift */,
-				03CA7D8827B6E8ED00D1C74F /* Assets.xcassets */,
 				03CA7D8A27B6E8EE00D1C74F /* Main.storyboard */,
-				03CA7D8D27B6E8EE00D1C74F /* Info.plist */,
-				03CA7D8E27B6E8EE00D1C74F /* RedBlackTreeTool.entitlements */,
+				0381ED9727BA287900380AA1 /* TreeScene.sks */,
+				0381ED9B27BA28C300380AA1 /* Info.plist */,
 			);
 			path = RedBlackTreeTool;
 			sourceTree = "<group>";
@@ -129,9 +124,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03CA7D8127B6E8EB00D1C74F /* GameScene.sks in Resources */,
-				03CA7D8927B6E8ED00D1C74F /* Assets.xcassets in Resources */,
-				03CA7D8327B6E8EB00D1C74F /* Actions.sks in Resources */,
+				0381ED9827BA287900380AA1 /* TreeScene.sks in Resources */,
 				03CA7D8C27B6E8EE00D1C74F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -144,7 +137,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				03CA7D8727B6E8EB00D1C74F /* ViewController.swift in Sources */,
-				03CA7D8527B6E8EB00D1C74F /* GameScene.swift in Sources */,
+				0381ED9227BA277600380AA1 /* RedBlackTree.swift in Sources */,
+				03CA7D8527B6E8EB00D1C74F /* TreeScene.swift in Sources */,
 				03CA7D7F27B6E8EB00D1C74F /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -283,7 +277,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = RedBlackTreeTool/RedBlackTreeTool.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = RedBlackTreeTool/Info.plist;
@@ -302,7 +296,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = RedBlackTreeTool/RedBlackTreeTool.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = RedBlackTreeTool/Info.plist;
