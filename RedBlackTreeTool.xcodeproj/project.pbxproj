@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0345510827BB1B7E00E565CD /* RedBlackTreeAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0345510727BB1B7E00E565CD /* RedBlackTreeAnimation.swift */; };
 		0381ED9227BA277600380AA1 /* RedBlackTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381ED9127BA277600380AA1 /* RedBlackTree.swift */; };
 		0381ED9827BA287900380AA1 /* TreeScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0381ED9727BA287900380AA1 /* TreeScene.sks */; };
 		03CA7D7F27B6E8EB00D1C74F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CA7D7E27B6E8EB00D1C74F /* AppDelegate.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0345510727BB1B7E00E565CD /* RedBlackTreeAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedBlackTreeAnimation.swift; sourceTree = "<group>"; };
 		0381ED9127BA277600380AA1 /* RedBlackTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedBlackTree.swift; sourceTree = "<group>"; };
 		0381ED9727BA287900380AA1 /* TreeScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = TreeScene.sks; sourceTree = "<group>"; };
 		0381ED9B27BA28C300380AA1 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 				03CA7D7E27B6E8EB00D1C74F /* AppDelegate.swift */,
 				03CA7D8427B6E8EB00D1C74F /* TreeScene.swift */,
 				0381ED9127BA277600380AA1 /* RedBlackTree.swift */,
+				0345510727BB1B7E00E565CD /* RedBlackTreeAnimation.swift */,
 				03CA7D8627B6E8EB00D1C74F /* ViewController.swift */,
 				03CA7D8A27B6E8EE00D1C74F /* Main.storyboard */,
 				0381ED9727BA287900380AA1 /* TreeScene.sks */,
@@ -139,6 +142,7 @@
 				03CA7D8727B6E8EB00D1C74F /* ViewController.swift in Sources */,
 				0381ED9227BA277600380AA1 /* RedBlackTree.swift in Sources */,
 				03CA7D8527B6E8EB00D1C74F /* TreeScene.swift in Sources */,
+				0345510827BB1B7E00E565CD /* RedBlackTreeAnimation.swift in Sources */,
 				03CA7D7F27B6E8EB00D1C74F /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
