@@ -9,20 +9,9 @@ import Foundation
 import simd
 import SpriteKit
 
-class SpriteKitAnimation : AnimationProtocol
-{
-  var description: String = ""
-  
-  func play() {
-    
-  }
-  
-  func reverse() {
-    
-  }
-}
-
 class RedBlackSKTree: SKNode {
+  
+  var nilNodesVisible : Bool = true
   
   var tree = RedBlackTree()
   var rootNode : RedBlackSKNode? = RedBlackSKNode(modelNode: nil)
@@ -31,25 +20,56 @@ class RedBlackSKTree: SKNode {
     removeAllChildren()
     
     rootNode = RedBlackSKNode(modelNode: tree.root)
-    rootNode!.drawFromModel()
+    rootNode!.drawFromModel(model: tree.root)
     
     addChild(rootNode!)
   }
   
+  func applyAnimation(animation : AnimationType) {
+    
+    switch animation {
+    case .highlight(let key, let description):
+        highlight(key: key)
+        print(description)
+      break
+      
+    default:
+      print("Animation Type not implemented")
+    }
+    
+  }
+  
+  func highlight(key: Int, colour : NSColor = .yellow) {
+
+    // find the node coresponding to the key
+    let node = rootNode!
+    
+    
+    let currentColour = node.strokeColor
+    
+    let highlight = SKAction.run {
+      node.strokeColor = colour
+    }
+    
+    let old = SKAction.run {
+      node.strokeColor = currentColour
+    }
+    
+    // Highlight the node with the given colour for 2 seconds before changing it back to the original colour
+    rootNode!.run(SKAction.sequence([highlight, SKAction.wait(forDuration: 2.0), old]))
+  }
   
 }
 
 
 class RedBlackSKNode : SKShapeNode
 {
-  private var label : SKLabelNode
-  private var nodeRadius : CGFloat = 75
-  private var baseHeight : CGFloat = 200
-  private var baseDistance : CGFloat = 100
-  var depth = 0
-  
-  var model : RedBlackNode?
+  // Red Black Information
+  var key : Int?
   var rbChildren : [RedBlackSKNode?] = [nil, nil]
+  private(set) var parentRelation : ParentRelation = .no_parent
+
+  // Easy access for left and right child
   var leftChild : RedBlackSKNode? {
     get {
       return rbChildren[0]
@@ -67,19 +87,31 @@ class RedBlackSKNode : SKShapeNode
     }
   }
   
+  
+  private var label : SKLabelNode
+  private var nodeRadius : CGFloat = 75
+  private var baseHeight : CGFloat = 200
+  private var baseDistance : CGFloat = 100
+  var depth = 0
+  
+  
   private var connectionNodes : [SKShapeNode?] = [nil, nil]
   
   init(modelNode : RedBlackNode?) {
     
-    model = modelNode
-    
     var text = "nil"
     var colour = NSColor.black
+    
+    // If the model exists
     if let n = modelNode {
+      key = n.key
+      parentRelation = n.parentRelation
+      
       text = String(n.key)
       colour = n.colour == Colour.black ? .black : .red
     }
     
+    // Create a label to diplay the text for the node
     label = SKLabelNode.init(fontNamed: "HelveticaNeue-Bold")
     label.text = text
     label.fontColor = .black
@@ -104,7 +136,7 @@ class RedBlackSKNode : SKShapeNode
   }
   
   
-  func drawFromModel() {
+  func drawFromModel(model: RedBlackNode?) {
     
     // If the model is nil we no longer need draw more for this branch of the tree
     guard let m = model else {
@@ -115,8 +147,8 @@ class RedBlackSKNode : SKShapeNode
     rbChildren = [RedBlackSKNode(modelNode: m.leftChild), RedBlackSKNode(modelNode: m.rightChild)]
         
     // Recursively call on the children
-    leftChild!.drawFromModel()
-    rightChild!.drawFromModel()
+    leftChild!.drawFromModel(model: m.leftChild)
+    rightChild!.drawFromModel(model: m.rightChild)
     
     // set the depth
     depth = max(leftChild!.depth + 1, rightChild!.depth + 1)
@@ -138,7 +170,8 @@ class RedBlackSKNode : SKShapeNode
   // Modifies the connection nodes to connect the node with its children
   private func modifyConnectionNodes() {
     // if the model is nil remove the connection nodes if they exist
-    guard model != nil else {
+    guard key != nil else {
+      // If the key does not exist delete the connection nodes, and remove the connection nodes
       if let left = connectionNodes[0], let right = connectionNodes[1] {
         removeChildren(in: [left, right])
       }
@@ -178,13 +211,7 @@ class RedBlackSKNode : SKShapeNode
   func calculateOffset() -> (CGPoint) {
         
     let x = pow(2.0, CGFloat(depth - 1)) * baseDistance + pow(2.0, CGFloat(depth)) * nodeRadius
-    
-//    if (depth >= 2) {
-//      for i in 0...(depth-2) {
-//        x = x + pow(2.0, CGFloat(i)) * nodeRadius
-//      }
-//    }
-    
+        
     return CGPoint(x: -x, y: -baseHeight)
   }
   
@@ -217,12 +244,3 @@ class RedBlackSKNode : SKShapeNode
     fatalError("init(coder:) has not been implemented")
   }
 }
-
-
-/*
- 
- b
- 
- 2b + 9
- 
- */

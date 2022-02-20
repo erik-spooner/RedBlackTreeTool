@@ -70,6 +70,8 @@ class TreeScene: SKScene
       // Reset the postion of the tree
       tree.position = CGPoint()
       tree.setScale(1.0)
+      
+      tree.highlight(key: 0)
       break
       
     case 0x35:

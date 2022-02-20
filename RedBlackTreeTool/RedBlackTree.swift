@@ -696,6 +696,12 @@ extension Array {
   }
 }
 
+enum AnimationType
+{
+  case highlight(node: Int, description : String)
+}
+
+
 protocol AnimationProtocol
 {
   var description : String { get set }
