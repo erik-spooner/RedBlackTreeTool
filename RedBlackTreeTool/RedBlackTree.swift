@@ -11,29 +11,31 @@ class RedBlackTree
 {
   var root : RedBlackNode? = nil
   
-  private var animationQueue : [AnimationProtocol] = [AnimationProtocol]()
+  private var animationQueue : [AnimationType] = [AnimationType]()
   private var animationIndex : Int = 0
   
-  func next() {
+  func next() -> AnimationType? {
     guard !animationQueue.isEmpty else {
       print("No animation is playing")
-      return
+      return nil
     }
 
     // play the animation
-    animationQueue[animationIndex].play()
+    let animation = animationQueue[animationIndex]
     animationIndex = min(animationIndex + 1, animationQueue.count - 1)
+    
+    return animation
   }
   
-  func previous() {
+  func previous() -> AnimationType?  {
     guard !animationQueue.isEmpty else {
       print("No animation is playing")
-      return
+      return nil
     }
     
     animationIndex = max(0, animationIndex - 1)
     // Play the animation in reverse
-    animationQueue[animationIndex].reverse()
+    return animationQueue[animationIndex]
   }
   
   func skip() {
@@ -42,7 +44,6 @@ class RedBlackTree
       return
     }
     
-    animationQueue.last!.play()
     animationIndex = animationQueue.count - 1
   }
   
@@ -56,36 +57,44 @@ class RedBlackTree
   func find(key: Int) -> RedBlackNode? {
     // Animation
     resetAnimationQueue()
-    animationQueue.append(TextAnimation(description: "Begining find operation for \(key)"))
-    animationQueue.append(TextAnimation(description: "Start at the root node"))
+    animationQueue.append(AnimationType.text(description: "Begining find operation for \(key)"))
+    animationQueue.append(AnimationType.text(description: "Start at the root node"))
     
+    var parentKey : Int? = nil
+    var parentRelation : ParentRelation = .no_parent
     var node = root
     
+    
     while(node != nil) {
-      
-      animationQueue.append(TextAnimation(description: "Comparing the current node, \(node!.key), with the desired key"))
+      animationQueue.append(AnimationType.highlight(node: NodeIdentification(k: node!.key, p: parentKey, r: parentRelation), description: "Comparing the current node, \(node!.key), with the desired key of \(key)"))
       
       // Left traversal
       if key < node!.key {
+        animationQueue.append(AnimationType.text(description: "\(key) < \(node!.key) so traversing to left child of node"))
         
-        animationQueue.append(TextAnimation(description: "\(key) < \(node!.key) so traversing to left child of node"))
+        parentKey = node!.key
+        parentRelation = .left
         node = node!.leftChild
       }
       // Right traversal
       else if key > node!.key {
-        animationQueue.append(TextAnimation(description: "\(key) > \(node!.key) so traversing to right child of node"))
+        animationQueue.append(AnimationType.text(description: "\(key) > \(node!.key) so traversing to right child of node"))
+        
+        parentKey = node!.key
+        parentRelation = .right
         node = node!.rightChild
       }
       // The node's key is the same as the given key so we have found the one that we are looking for
       else {
-        animationQueue.append(TextAnimation(description: "\(key) = \(node!.key) so desired node has been found"))
-        animationQueue.append(TextAnimation(description: "Ending find operation for \(key), returning the coresponding node"))
+        animationQueue.append(AnimationType.text(description: "\(key) = \(node!.key) so desired node has been found"))
+        animationQueue.append(AnimationType.text(description: "Ending find operation for \(key), returning the coresponding node"))
         return node
       }
     }
     
-    animationQueue.append(TextAnimation(description: "Nil node encountered. Thus key does not exist in the tree"))
-    animationQueue.append(TextAnimation(description: "Ending find operation for \(key), returning nil as key was not found"))
+    animationQueue.append(AnimationType.highlight(node: NodeIdentification(k: nil, p: parentKey, r: parentRelation), description: "Nil node encountered. Thus key does not exist in the tree"))
+    
+    animationQueue.append(AnimationType.text(description: "Ending find operation for \(key), returning nil as key was not found"))
 
     return nil
   }
@@ -96,8 +105,8 @@ class RedBlackTree
     
     // Animation
     resetAnimationQueue()
-    animationQueue.append(TextAnimation(description: "Begining insert operation for \(key)"))
-    animationQueue.append(TextAnimation(description: "Start at the root node"))
+    animationQueue.append(AnimationType.text(description: "Begining insert operation for \(key)"))
+    animationQueue.append(AnimationType.text(description: "Start at the root node"))
 
     
     // Find the place in the tree to insert
@@ -109,38 +118,38 @@ class RedBlackTree
 
       // Left traversal
       if key < node!.key {
-        animationQueue.append(TextAnimation(description: "\(key) < \(node!.key) so traversing to left child of node"))
+        animationQueue.append(AnimationType.text(description: "\(key) < \(node!.key) so traversing to left child of node"))
         node = node!.leftChild
       }
       // Right traversal
       else if key > node!.key {
-        animationQueue.append(TextAnimation(description: "\(key) > \(node!.key) so traversing to right child of node"))
+        animationQueue.append(AnimationType.text(description: "\(key) > \(node!.key) so traversing to right child of node"))
         node = node!.rightChild
       }
       else {
-        animationQueue.append(TextAnimation(description: "\(key) = \(node!.key). Key already exists in the Tree"))
-        animationQueue.append(TextAnimation(description: "Ending insert operation for \(key), returning false as \(key) already exists in the tree"))
+        animationQueue.append(AnimationType.text(description: "\(key) = \(node!.key). Key already exists in the Tree"))
+        animationQueue.append(AnimationType.text(description: "Ending insert operation for \(key), returning false as \(key) already exists in the tree"))
 
         // return false if the key is already in the tree
         return false
       }
     }
     
-    animationQueue.append(TextAnimation(description: "Nil node encountered. Place for insertion has been found"))
+    animationQueue.append(AnimationType.text(description: "Nil node encountered. Place for insertion has been found"))
     
     // Create the new node and assign the parent/child relationship
-    animationQueue.append(TextAnimation(description: "Create a red node for \(key)"))
+    animationQueue.append(AnimationType.text(description: "Create a red node for \(key)"))
     var n = RedBlackNode(key: key, colour: .red)
     n.parent = parent
     
     
     if let p = parent {
-      animationQueue.append(TextAnimation(description: "Attach \(key) to its parent"))
+      animationQueue.append(AnimationType.text(description: "Attach \(key) to its parent"))
       p.children[n.parentRelation] = n
     }
     
 
-    animationQueue.append(TextAnimation(description: "Proceeding to balance the tree and ensure Red Black properties are maintained"))
+    animationQueue.append(AnimationType.text(description: "Proceeding to balance the tree and ensure Red Black properties are maintained"))
 
     
     // After we have inserted the new node, we need to balance the tree by starting at the node that we inserted and moving up the tree
@@ -149,14 +158,14 @@ class RedBlackTree
       // Case 1 the parent is a black node so we are all good
       if let p = n.parent {
         if p.colour == .black {
-          animationQueue.append(TextAnimation(description: "Parent of \(n.key) is black, so red black properties were not violated and tree is still balanced"))
+          animationQueue.append(AnimationType.text(description: "Parent of \(n.key) is black, so red black properties were not violated and tree is still balanced"))
           break
         }
       }
       // Case 0 the parent does not exist, so we are inserting the root node
       else {
         // if the parent does not exist make the new node the root
-        animationQueue.append(TextAnimation(description: "Parent of \(n.key) does not exist, so assigning \(n.key) to be the new root node of the tree"))
+        animationQueue.append(AnimationType.text(description: "Parent of \(n.key) does not exist, so assigning \(n.key) to be the new root node of the tree"))
         root = n
         break
       }
@@ -168,21 +177,21 @@ class RedBlackTree
       let g = p.parent! // GrandParent must exist and be black beacuse parent is red
       let uncle = p.parentRelation == .left ? g.rightChild : g.leftChild // Uncle may not exist
       
-      animationQueue.append(TextAnimation(description: "Parent of \(n.key), is red with key \(p.key), and grandparent is black with key \(g.key)"))
+      animationQueue.append(AnimationType.text(description: "Parent of \(n.key), is red with key \(p.key), and grandparent is black with key \(g.key)"))
       
       // Case 2 If the uncle is red. Repaint p and u black and g red
       if let u = uncle {
         if u.colour == .red {
           
-          animationQueue.append(TextAnimation(description: "Uncle of \(n.key) exists and is red with key \(u.key)"))
-          animationQueue.append(TextAnimation(description: "Repaint the parent, uncle and grandparent"))
+          animationQueue.append(AnimationType.text(description: "Uncle of \(n.key) exists and is red with key \(u.key)"))
+          animationQueue.append(AnimationType.text(description: "Repaint the parent, uncle and grandparent"))
           
           p.colour = .black
           u.colour = .black
           g.colour = .red
           
           // update the node to be the grandparent and continue
-          animationQueue.append(TextAnimation(description: "Update the node that needs to be balanced to be the grandparent and continue"))
+          animationQueue.append(AnimationType.text(description: "Update the node that needs to be balanced to be the grandparent and continue"))
           n = g
           continue
         }
@@ -191,34 +200,34 @@ class RedBlackTree
       // Case 3  If the uncle is black (or doesnt exist)
       // Case 3a If n is an internal node to g. We need to rotate up the node to the parent postion
       if n.parentRelation != p.parentRelation {
-        animationQueue.append(TextAnimation(description: "The node is an internal node of its grandparent, so rotate up the node to its parent's position"))
+        animationQueue.append(AnimationType.text(description: "The node is an internal node of its grandparent, so rotate up the node to its parent's position"))
         assert(rotateUp(node: n))
         
         // do a name swap for n and p
-        animationQueue.append(TextAnimation(description: "Reasign the former parent to be the node that we are trying to balance"))
+        animationQueue.append(AnimationType.text(description: "Reasign the former parent to be the node that we are trying to balance"))
         let temp = n
         n = p
         p = temp
       }
       
       // The node is an external node to g so we rotate up p and swap the colours for p and g after this the tree is fine
-      animationQueue.append(TextAnimation(description: "The node is an external node of its grandparent, so rotate up the node to its parent's position"))
+      animationQueue.append(AnimationType.text(description: "The node is an external node of its grandparent, so rotate up the node to its parent's position"))
       assert(rotateUp(node: p))
       
-      animationQueue.append(TextAnimation(description: "Swap the colours for parent and grandparent"))
+      animationQueue.append(AnimationType.text(description: "Swap the colours for parent and grandparent"))
       p.colour = .black
       g.colour = .red
       break
     }
         
     // Ensure that the root node is black
-    animationQueue.append(TextAnimation(description: "Ensure that the root node is black"))
+    animationQueue.append(AnimationType.text(description: "Ensure that the root node is black"))
     root!.colour = .black
     
     assert(verify())
     
     // Return true since the insertion was successful
-    animationQueue.append(TextAnimation(description: "Ending insertion operation, returning true as \(key) was succuessfully inserted into the tree"))
+    animationQueue.append(AnimationType.text(description: "Ending insertion operation, returning true as \(key) was succuessfully inserted into the tree"))
     return true
   }
   
@@ -228,8 +237,8 @@ class RedBlackTree
     
     // Animation
     resetAnimationQueue()
-    animationQueue.append(TextAnimation(description: "Begining delete operation for \(key)"))
-    animationQueue.append(TextAnimation(description: "Start at the root node"))
+    animationQueue.append(AnimationType.text(description: "Begining delete operation for \(key)"))
+    animationQueue.append(AnimationType.text(description: "Start at the root node"))
     
     // Find the place in the tree to delete
     var node = root
@@ -237,24 +246,24 @@ class RedBlackTree
     while(true) {
       // return false if the node that the key corresponds to does not exist
       if node == nil  {
-        animationQueue.append(TextAnimation(description: "Nil node encountered, \(key) not found within tree"))
-        animationQueue.append(TextAnimation(description: "Ending delete opertation, returning false, as \(key) did not exist in the tree"))
+        animationQueue.append(AnimationType.text(description: "Nil node encountered, \(key) not found within tree"))
+        animationQueue.append(AnimationType.text(description: "Ending delete opertation, returning false, as \(key) did not exist in the tree"))
         return false
       }
       
       // Left traversal
       if key < node!.key {
-        animationQueue.append(TextAnimation(description: "\(key) < \(node!.key) so traversing to left child of node"))
+        animationQueue.append(AnimationType.text(description: "\(key) < \(node!.key) so traversing to left child of node"))
         node = node!.leftChild
       }
       // Right traversal
       else if key > node!.key {
-        animationQueue.append(TextAnimation(description: "\(key) > \(node!.key) so traversing to right child of node"))
+        animationQueue.append(AnimationType.text(description: "\(key) > \(node!.key) so traversing to right child of node"))
         node = node!.rightChild
       }
       else {
         // We found the node to remove
-        animationQueue.append(TextAnimation(description: "\(key) = \(node!.key), node to delete has been found"))
+        animationQueue.append(AnimationType.text(description: "\(key) = \(node!.key), node to delete has been found"))
         break
       }
     }
@@ -264,21 +273,21 @@ class RedBlackTree
     
     // Case 0 the only node is the root
     if (n.key == root!.key && n.leftChild == nil && n.rightChild == nil) {
-      animationQueue.append(TextAnimation(description: "\(key) is the root node and the only node in the tree, so it is safe to delete"))
+      animationQueue.append(AnimationType.text(description: "\(key) is the root node and the only node in the tree, so it is safe to delete"))
       root = nil
       
-      animationQueue.append(TextAnimation(description: "Ending delete operation, returning true, as \(key) has been sucessfully removed"))
+      animationQueue.append(AnimationType.text(description: "Ending delete operation, returning true, as \(key) has been sucessfully removed"))
       return true
     }
     
     // Case 1 The node to delete has two non nil children
     if let _ = n.leftChild, let _ = n.rightChild {
       // find the predecessor node to replace with n. We know the predecessor is non nil as n must have a left child
-      animationQueue.append(TextAnimation(description: "The node to delete has two non nil children, so find the predecessor node to \(n.key)"))
+      animationQueue.append(AnimationType.text(description: "The node to delete has two non nil children, so find the predecessor node to \(n.key)"))
       var p = predecessor(node: n)!
       
       // swap n with p. We now know that n must have at most one non nil child (left child) and can proceed with deleting n
-      animationQueue.append(TextAnimation(description: "Found the predecessor node \(p.key), so swap \(n.key) with \(p.key)"))
+      animationQueue.append(AnimationType.text(description: "Found the predecessor node \(p.key), so swap \(n.key) with \(p.key)"))
       swap(A: &n, B: &p)
       assert(n.rightChild == nil)
     }
@@ -288,23 +297,23 @@ class RedBlackTree
       assert(n.colour == .black)
       assert(child.colour == .red)
       
-      animationQueue.append(TextAnimation(description: "\(n.key) is black, with \(child.key) being the red left child, and no right child"))
+      animationQueue.append(AnimationType.text(description: "\(n.key) is black, with \(child.key) being the red left child, and no right child"))
       
       // Delete n and replace it with its child changing the childs colour to black
       child.parent = n.parent
       child.colour = .black
       
-      animationQueue.append(TextAnimation(description: "Delete \(n.key) and replace it with \(child.key), changing \(child.key)'s colour to black"))
+      animationQueue.append(AnimationType.text(description: "Delete \(n.key) and replace it with \(child.key), changing \(child.key)'s colour to black"))
       if let parent = n.parent {
         parent.children[n.parentRelation] = child
       }
       else {
-        animationQueue.append(TextAnimation(description: "\(n.key) was the root so make \(child.key) the new root of the tree"))
+        animationQueue.append(AnimationType.text(description: "\(n.key) was the root so make \(child.key) the new root of the tree"))
         root = child
       }
 
-      animationQueue.append(TextAnimation(description: "As we have only removed a red leaf node we have not broke any red black properties"))
-      animationQueue.append(TextAnimation(description: "Ending delete operation, returning true, as \(key) has been sucessfully removed"))
+      animationQueue.append(AnimationType.text(description: "As we have only removed a red leaf node we have not broke any red black properties"))
+      animationQueue.append(AnimationType.text(description: "Ending delete operation, returning true, as \(key) has been sucessfully removed"))
       return true
     }
     
@@ -313,24 +322,24 @@ class RedBlackTree
       assert(n.colour == .black)
       assert(child.colour == .red)
       
-      animationQueue.append(TextAnimation(description: "\(n.key) is black, with \(child.key) being the red right child, and no left child"))
+      animationQueue.append(AnimationType.text(description: "\(n.key) is black, with \(child.key) being the red right child, and no left child"))
 
       
       // Delete n and replace it with its child changing the childs colour to black
       child.parent = n.parent
       child.colour = .black
       
-      animationQueue.append(TextAnimation(description: "Delete \(n.key) and replace it with \(child.key), changing \(child.key)'s colour to black"))
+      animationQueue.append(AnimationType.text(description: "Delete \(n.key) and replace it with \(child.key), changing \(child.key)'s colour to black"))
       if let parent = n.parent {
         parent.children[n.parentRelation] = child
       }
       else {
-        animationQueue.append(TextAnimation(description: "\(n.key) was the root so make \(child.key) the new root of the tree"))
+        animationQueue.append(AnimationType.text(description: "\(n.key) was the root so make \(child.key) the new root of the tree"))
         root = child
       }
 
-      animationQueue.append(TextAnimation(description: "As we have only removed a red leaf node we have not broke any red black properties"))
-      animationQueue.append(TextAnimation(description: "Ending delete operation, returning true, as \(key) has been sucessfully removed"))
+      animationQueue.append(AnimationType.text(description: "As we have only removed a red leaf node we have not broke any red black properties"))
+      animationQueue.append(AnimationType.text(description: "Ending delete operation, returning true, as \(key) has been sucessfully removed"))
       return true
     }
     
@@ -341,18 +350,18 @@ class RedBlackTree
     
     // Case 3 n is red
     if (n.colour == .red) {
-      animationQueue.append(TextAnimation(description: "\(n.key) is a red leaf node so it is safe to delete"))
+      animationQueue.append(AnimationType.text(description: "\(n.key) is a red leaf node so it is safe to delete"))
 
       // simply delete n
       n.parent!.children[n.parentRelation] = nil
       
-      animationQueue.append(TextAnimation(description: "Ending delete operation, returning true, as \(key) has been sucessfully removed"))
+      animationQueue.append(AnimationType.text(description: "Ending delete operation, returning true, as \(key) has been sucessfully removed"))
       return true
     }
     // Case 4 n is black
     else {
       // Delete the node
-      animationQueue.append(TextAnimation(description: "\(n.key) is a black leaf node the tree will need to be balanced after deleting it"))
+      animationQueue.append(AnimationType.text(description: "\(n.key) is a black leaf node the tree will need to be balanced after deleting it"))
       n.parent!.children[n.parentRelation] = nil
       
       // Need to traverse up the tree to the root to balance out deleting a black node
@@ -363,14 +372,14 @@ class RedBlackTree
         let closeCousin = s.children[!s.parentRelation]   // close nephew
         let distantCousin = s.children[s.parentRelation]    // distant nephew
         
-        animationQueue.append(TextAnimation(description: "Observe the close relations of \(n.key)"))
+        animationQueue.append(AnimationType.text(description: "Observe the close relations of \(n.key)"))
         
         // Case 1 s is red (then p, c, and d must be black)
         if (s.colour == .red) {
           assert(closeCousin != nil)
           assert(distantCousin != nil)
           
-          animationQueue.append(TextAnimation(description: "Proceeding to case 1 where the sibling \(s.key) is red, and the parent \(p.key), the close cousin \(closeCousin!.key), and the distant cousin \(distantCousin!.key) are black"))
+          animationQueue.append(AnimationType.text(description: "Proceeding to case 1 where the sibling \(s.key) is red, and the parent \(p.key), the close cousin \(closeCousin!.key), and the distant cousin \(distantCousin!.key) are black"))
 
 
           deleteCase1(parent: p, sibling: s, closeCousin: closeCousin!, distantCousin: distantCousin!)
@@ -379,7 +388,7 @@ class RedBlackTree
         }
         
         if let d = distantCousin, d.colour == .red {
-          animationQueue.append(TextAnimation(description: "Proceeding to case 3 where the distant cousin \(distantCousin!.key) is red"))
+          animationQueue.append(AnimationType.text(description: "Proceeding to case 3 where the distant cousin \(distantCousin!.key) is red"))
           
           deleteCase3(parent: p, sibling: s, distantCousin: d)
           // Balancing will be complete so exit the loop
@@ -387,7 +396,7 @@ class RedBlackTree
         }
         
         if let c = closeCousin, c.colour == .red {
-          animationQueue.append(TextAnimation(description: "Proceeding to case 2 where the close cousin \(closeCousin!.key) is red"))
+          animationQueue.append(AnimationType.text(description: "Proceeding to case 2 where the close cousin \(closeCousin!.key) is red"))
 
           deleteCase2(parent: p, sibling: s, closeCousin: c, distantCousin: distantCousin)
           // Balancing will be complete so exit the loop
@@ -395,7 +404,7 @@ class RedBlackTree
         }
         
         if p.colour == .red {
-          animationQueue.append(TextAnimation(description: "The parent \(p.key) is red and both cousins are not, so the tree can be balanced by making the sibling \(s.key) red, and the parent \(p.key) black"))
+          animationQueue.append(AnimationType.text(description: "The parent \(p.key) is red and both cousins are not, so the tree can be balanced by making the sibling \(s.key) red, and the parent \(p.key) black"))
           // Since the parent is red and both cousins are not red we can make p black and s red to balance the tree
           s.colour = .red
           p.colour = .black
@@ -403,19 +412,19 @@ class RedBlackTree
         }
         
         // change the colour of the sibling to reduce the sibling branch's black count by 1
-        animationQueue.append(TextAnimation(description: "Change the colour of the sibling \(s.key) to red to reduce the sibling branch's black count by 1"))
+        animationQueue.append(AnimationType.text(description: "Change the colour of the sibling \(s.key) to red to reduce the sibling branch's black count by 1"))
         s.colour = .red
                 
         // move up the tree one step
-        animationQueue.append(TextAnimation(description: "\(n.key), has been balanced as much as possible. Need to move up the tree by looking at the parent node \(p.key)"))
+        animationQueue.append(AnimationType.text(description: "\(n.key), has been balanced as much as possible. Need to move up the tree by looking at the parent node \(p.key)"))
         n = p
       }
       
       // finally ensure the root node is black
-      animationQueue.append(TextAnimation(description: "Ensure that the root node \(root!.key) is black"))
+      animationQueue.append(AnimationType.text(description: "Ensure that the root node \(root!.key) is black"))
       root!.colour = .black
       
-      animationQueue.append(TextAnimation(description: "Ending delete operation, returning true, as \(key) has been sucessfully removed"))
+      animationQueue.append(AnimationType.text(description: "Ending delete operation, returning true, as \(key) has been sucessfully removed"))
       return true
     }
   }
@@ -428,10 +437,10 @@ class RedBlackTree
     var d = distantCousin
     
     // Rotate up s and change the colour of p and s
-    animationQueue.append(TextAnimation(description: "Rotate up the sibling \(s.key)"))
+    animationQueue.append(AnimationType.text(description: "Rotate up the sibling \(s.key)"))
     assert(rotateUp(node: s))
     
-    animationQueue.append(TextAnimation(description: "Change the colours of the former parent \(p.key) to red, and the former sibling \(s.key) to black"))
+    animationQueue.append(AnimationType.text(description: "Change the colours of the former parent \(p.key) to red, and the former sibling \(s.key) to black"))
     s.colour = .black
     p.colour = .red
     
@@ -441,7 +450,7 @@ class RedBlackTree
     d = s.children[s.parentRelation]
     
     if let dC = d, dC.colour == .red {
-      animationQueue.append(TextAnimation(description: "Proceeding to case 3 where the distant cousin \(dC.key) is red"))
+      animationQueue.append(AnimationType.text(description: "Proceeding to case 3 where the distant cousin \(dC.key) is red"))
       
       deleteCase3(parent: p, sibling: s, distantCousin: dC)
       // Balancing will be complete
@@ -449,14 +458,14 @@ class RedBlackTree
     }
     
     if let cC = c, cC.colour == .red {
-      animationQueue.append(TextAnimation(description: "Proceeding to case 2 where the close cousin \(cC.key) is red"))
+      animationQueue.append(AnimationType.text(description: "Proceeding to case 2 where the close cousin \(cC.key) is red"))
 
       deleteCase2(parent: p, sibling: s, closeCousin: cC, distantCousin: d)
       // Balancing will be complete
       return
     }
     
-    animationQueue.append(TextAnimation(description: "The parent \(p.key) is red and both cousins are not, so the tree can be balanced by making the sibling \(s.key) red, and the parent \(p.key) black"))
+    animationQueue.append(AnimationType.text(description: "The parent \(p.key) is red and both cousins are not, so the tree can be balanced by making the sibling \(s.key) red, and the parent \(p.key) black"))
     // Since the parent is red and both cousins are not red we can make p black and s red to balance the tree
     s.colour = .red
     p.colour = .black
@@ -469,11 +478,11 @@ class RedBlackTree
     var d = distantCousin
 
     // rotate up the close cousin
-    animationQueue.append(TextAnimation(description: "Rotate up the close cousin \(c.key)"))
+    animationQueue.append(AnimationType.text(description: "Rotate up the close cousin \(c.key)"))
     assert(rotateUp(node: c))
     
     // reassin the colours of s and c
-    animationQueue.append(TextAnimation(description: "Change the colours of the former sibling \(s.key) to red, and the former close cousin \(c.key) to black"))
+    animationQueue.append(AnimationType.text(description: "Change the colours of the former sibling \(s.key) to red, and the former close cousin \(c.key) to black"))
     s.colour = .red
     c.colour = .black
     
@@ -493,11 +502,11 @@ class RedBlackTree
     let d = distantCousin
     
     // rotate up the sibling
-    animationQueue.append(TextAnimation(description: "Rotate up the sibling \(s.key)"))
+    animationQueue.append(AnimationType.text(description: "Rotate up the sibling \(s.key)"))
     assert(rotateUp(node: s))
     
     // reassign colours
-    animationQueue.append(TextAnimation(description: "Change the colours of the former sibling \(s.key) to \(p.colour), the former parent \(p.key) to black, and the former distant cousin \(d.key) to black to finish balancing the tree"))
+    animationQueue.append(AnimationType.text(description: "Change the colours of the former sibling \(s.key) to \(p.colour), the former parent \(p.key) to black, and the former distant cousin \(d.key) to black to finish balancing the tree"))
     s.colour = p.colour
     p.colour = .black
     d.colour = .black
@@ -698,33 +707,51 @@ extension Array {
 
 enum AnimationType
 {
-  case highlight(node: Int, description : String)
+  case text(description: String)
+  case highlight(node : NodeIdentification, description : String)
+}
+
+struct NodeIdentification {
+  let key : Int?
+  let parent : Int?
+  let relation : ParentRelation
+  
+  init(k : Int?, p : Int?, r : ParentRelation) {
+    key = k
+    parent = p
+    relation = r
+  }
 }
 
 
-protocol AnimationProtocol
+class TextAnimation
 {
-  var description : String { get set }
-  
-  func play()
-  func reverse()
-}
-
-class TextAnimation: AnimationProtocol
-{
-  var description: String
-  
-  init(description d: String) {
-    description = d
+  func play(animation : AnimationType) {
+    
+    switch animation {
+    case .highlight(_, let description):
+      print(description)
+      break
+      
+    default:
+      print("Animation type not implemented")
+    }
+    
+    print()
   }
   
-  func play() {
-    print(description)
-  }
-  
-  func reverse() {
-    let r : [Character] = description.reversed()
-    print(String(r))
+  func reverse(animation : AnimationType) {
+    
+    switch animation {
+    case .highlight(_, let description):
+      let r : [Character] = description.reversed()
+      print(String(r))
+      break
+      
+    default:
+      print("Animation type not implemented")
+    }
+    
   }
 }
 

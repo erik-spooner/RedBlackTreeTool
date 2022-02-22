@@ -14,36 +14,91 @@ class RedBlackSKTree: SKNode {
   var nilNodesVisible : Bool = true
   
   var tree = RedBlackTree()
-  var rootNode : RedBlackSKNode? = RedBlackSKNode(modelNode: nil)
+  var rootNode : RedBlackSKNode = RedBlackSKNode(modelNode: nil)
   
   func drawFromTree() {
     removeAllChildren()
     
     rootNode = RedBlackSKNode(modelNode: tree.root)
-    rootNode!.drawFromModel(model: tree.root)
+    rootNode.drawFromModel(model: tree.root)
     
-    addChild(rootNode!)
+    addChild(rootNode)
   }
   
-  func applyAnimation(animation : AnimationType) {
+  func next() {
+    if let a = tree .next() {
+      applyAnimation(animation: a)
+    } else {
+      print("No animation queued")
+    }
+  }
+  
+  private func applyAnimation(animation : AnimationType) {
     
     switch animation {
-    case .highlight(let key, let description):
-        highlight(key: key)
-        print(description)
+    case .text(let description):
+      print(description)
       break
+    
+    case .highlight(let i, let description):
+      highlight(identifier: i)
+      print(description)
+      break
+    
       
     default:
       print("Animation Type not implemented")
     }
-    
   }
   
-  func highlight(key: Int, colour : NSColor = .yellow) {
+  // Given the identifier for a node return the node itself
+  private func find(identifier: NodeIdentification) -> RedBlackSKNode {
+    var key : Int
+    var node : RedBlackSKNode
+    
+    if let nodeKey = identifier.key {
+      key = nodeKey
+    }
+    else if let parentKey = identifier.parent {
+      // The node is nil but the parent exists
+      key = parentKey
+    }
+    else {
+      // The node is nil and the parent is nil so it must be the root node
+      return rootNode
+    }
+    
+    node = rootNode
+    
+    while node.key != nil {
+      if (key < node.key!) {
+        node = node.leftChild!
+      }
+      else if (key > node.key!) {
+        node = node.rightChild!
+      }
+      else {
+        // Found the correct node so break out of the loop
+        break
+      }
+      
+      // The node's key should never be nil
+      assert(node.key != nil)
+    }
+    
+    if identifier.key == nil {
+      // If we are looking for a nil node
+      return node.rbChildren[identifier.relation]!
+    }
+    else {
+      return node
+    }
+  }
+  
+  private func highlight(identifier: NodeIdentification, colour : NSColor = .yellow) {
 
     // find the node coresponding to the key
-    let node = rootNode!
-    
+    let node = find(identifier: identifier)
     
     let currentColour = node.strokeColor
     
@@ -56,7 +111,7 @@ class RedBlackSKTree: SKNode {
     }
     
     // Highlight the node with the given colour for 2 seconds before changing it back to the original colour
-    rootNode!.run(SKAction.sequence([highlight, SKAction.wait(forDuration: 2.0), old]))
+    rootNode.run(SKAction.sequence([highlight, SKAction.wait(forDuration: 2.0), old]))
   }
   
 }
