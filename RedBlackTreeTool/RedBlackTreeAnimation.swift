@@ -33,6 +33,9 @@ class RedBlackSKTree: SKNode {
       print("No animation queued")
     }
   }
+  func update() {
+    rootNode.updateConnectionNodes()
+  }
   
   private func applyAnimation(animation : AnimationType) {
     
@@ -195,7 +198,7 @@ class RedBlackSKTree: SKNode {
     n.fadeOutConnectionNode(relation: !n.parentRelation)
     
     // Wait for the connection nodes to fade out
-    run(SKAction.wait(forDuration: 1.0))
+    let delay = SKAction.wait(forDuration: 1.0)
 
     // Save the position of the node
     let nodeOldPosition = n.position
@@ -212,7 +215,7 @@ class RedBlackSKTree: SKNode {
     
     var moveVector : CGVector = p.position - n.position
     var moveAction = SKAction.move(by: moveVector, duration: animationSpeed)
-    n.run(moveAction)
+    n.run(SKAction.sequence([delay, moveAction]))
 
     // Move the parent to the siblings location
     grandparent.removeChildren(in: [p])
@@ -222,7 +225,7 @@ class RedBlackSKTree: SKNode {
 
     moveVector = s.position - p.position
     moveAction = SKAction.move(by: moveVector, duration: animationSpeed)
-    p.run(moveAction)
+    p.run(SKAction.sequence([delay, moveAction]))
 
     // Move the nodes interior child to be the parent's child
     let childOldPosition = child.position
@@ -233,7 +236,7 @@ class RedBlackSKTree: SKNode {
 
     moveVector = CGPoint(x: -childOldPosition.x, y: childOldPosition.y) - child.position
     moveAction = SKAction.move(by: moveVector, duration: animationSpeed)
-    child.run(moveAction)
+    child.run(SKAction.sequence([delay, moveAction]))
     
     // if the node's new parent is the tree, we now need to update the root node to be n
     if grandparent == self {
@@ -246,7 +249,7 @@ class RedBlackSKTree: SKNode {
     var parented = grandparent
     while let node = parented as? RedBlackSKNode {
       node.updateHeight()
-      parented = node
+      parented = node.parent!
     }
         
     // Fade in the connection nodes of g->n->p->c
@@ -256,8 +259,6 @@ class RedBlackSKTree: SKNode {
     
     p.fadeInConnectionNode(relation: child.parentRelation, delay: animationSpeed)
     n.fadeInConnectionNode(relation: p.parentRelation, delay: animationSpeed)
-
-    
   }
 }
 
@@ -333,6 +334,7 @@ class RedBlackSKNode : SKShapeNode
   var height = 0
   
   private var connectionNodes : [SKShapeNode?] = [nil, nil]
+  private var connectionLocked : [Bool] = [false, false]
   
   init(modelNode : RedBlackNode?) {
     
@@ -396,8 +398,6 @@ class RedBlackSKNode : SKShapeNode
     // Create the connection nodes to the children and add the children to the scene
     addChild(leftChild!)
     addChild(rightChild!)
-    
-    updateConnectionNodes()
   }
   
   // Modifies the connection nodes to connect the node with its children
@@ -415,6 +415,10 @@ class RedBlackSKNode : SKShapeNode
     let offsets = [leftChild!.position, rightChild!.position]
 
     for i in 0...1 {
+      if connectionLocked[i] {
+        continue
+      }
+      
       // If the connection nodes do not exist create them
       if connectionNodes[i] == nil {
         connectionNodes[i] = SKShapeNode()
@@ -434,6 +438,9 @@ class RedBlackSKNode : SKShapeNode
       path.addLine(to: CGPoint(x: end.x, y: end.y))
       connectionNodes[i]!.path = path
     }
+    
+    leftChild!.updateConnectionNodes()
+    rightChild!.updateConnectionNodes()
   }
   
   func updateHeight() {
@@ -444,7 +451,6 @@ class RedBlackSKNode : SKShapeNode
       height = 0
     }
   }
-  
   
   // Caculate the offset of a node to its parent
   func calculateOffset() -> (CGPoint) {
@@ -458,13 +464,14 @@ class RedBlackSKNode : SKShapeNode
   
   func fadeOutConnectionNode(relation : ParentRelation) {
     if let n = connectionNodes[relation] {
+      connectionLocked[relation] = true
       n.run(SKAction.fadeOut(withDuration: 1.0))
     }
   }
   func fadeInConnectionNode(relation : ParentRelation, delay : Double = 0.0) {
     if let n = connectionNodes[relation] {
-      let updateConnections = SKAction.run { self.updateConnectionNodes() }
-      let action = SKAction.sequence([SKAction.wait(forDuration: delay), updateConnections, SKAction.fadeIn(withDuration: 1.0)])
+      let unlock = SKAction.run { self.connectionLocked[relation] = false }
+      let action = SKAction.sequence([SKAction.wait(forDuration: delay), unlock, SKAction.fadeIn(withDuration: 1.0)])
       n.run(action)
     }
   }
