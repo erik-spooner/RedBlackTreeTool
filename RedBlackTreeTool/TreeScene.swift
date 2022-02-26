@@ -27,6 +27,13 @@ class TreeScene: SKScene
     _ = tree.tree.insert(key: 2)
     _ = tree.tree.insert(key: 3)
     _ = tree.tree.insert(key: 4)
+    _ = tree.tree.insert(key: 5)
+    _ = tree.tree.insert(key: 6)
+    _ = tree.tree.insert(key: 7)
+    _ = tree.tree.insert(key: 8)
+    _ = tree.tree.insert(key: 9)
+    _ = tree.tree.insert(key: 10)
+    _ = tree.tree.insert(key: 11)
 
     tree.drawFromTree()
   }

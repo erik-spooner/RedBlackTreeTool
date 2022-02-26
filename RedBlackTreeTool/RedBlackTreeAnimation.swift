@@ -33,6 +33,7 @@ class RedBlackSKTree: SKNode {
       print("No animation queued")
     }
   }
+  
   func update() {
     rootNode.updateConnectionNodes()
   }
@@ -188,7 +189,7 @@ class RedBlackSKTree: SKNode {
     let p = n.parent as! RedBlackSKNode
     let s = p.rbChildren[!n.parentRelation]!
     let grandparent = p.parent! // could be the Tree (Not a Tree Node)
-    let child = n.rbChildren[!n.parentRelation]!
+    let c = n.rbChildren[!n.parentRelation]!
     
     // Fade out the connection nodes of g->p->n->c
     if let g = grandparent as? RedBlackSKNode {
@@ -197,14 +198,13 @@ class RedBlackSKTree: SKNode {
     p.fadeOutConnectionNode(relation: n.parentRelation)
     n.fadeOutConnectionNode(relation: !n.parentRelation)
     
-    // Wait for the connection nodes to fade out
-    let delay = SKAction.wait(forDuration: 1.0)
 
     // Save the position of the node
     let nodeOldPosition = n.position
     
     // Move the node to the parent location
     // remove n as a child of p and add it as a child of the grandparent
+    p.rbChildren[n.parentRelation] = c
     p.removeChildren(in: [n])
     n.position += p.position
     grandparent.addChild(n)
@@ -213,6 +213,7 @@ class RedBlackSKTree: SKNode {
       g.rbChildren[n.parentRelation] = n
     }
     
+    var delay = SKAction.wait(forDuration: 1.0)
     var moveVector : CGVector = p.position - n.position
     var moveAction = SKAction.move(by: moveVector, duration: animationSpeed)
     n.run(SKAction.sequence([delay, moveAction]))
@@ -228,36 +229,48 @@ class RedBlackSKTree: SKNode {
     p.run(SKAction.sequence([delay, moveAction]))
 
     // Move the nodes interior child to be the parent's child
-    let childOldPosition = child.position
-    n.removeChildren(in: [child])
-    child.position += nodeOldPosition
-    p.addChild(child)
-    p.rbChildren[child.parentRelation] = child
+    let childOldPosition = c.position
+    n.removeChildren(in: [c])
+    c.position += nodeOldPosition
+    p.addChild(c)
+    p.rbChildren[c.parentRelation] = c
 
-    moveVector = CGPoint(x: -childOldPosition.x, y: childOldPosition.y) - child.position
+    moveVector = CGPoint(x: -childOldPosition.x, y: childOldPosition.y) - c.position
     moveAction = SKAction.move(by: moveVector, duration: animationSpeed)
-    child.run(SKAction.sequence([delay, moveAction]))
+    c.run(SKAction.sequence([delay, moveAction]))
     
     // if the node's new parent is the tree, we now need to update the root node to be n
     if grandparent == self {
       rootNode = n
     }
     
-    // Update the new heights of the nodes (anything that parents n also needs to be updated)
+    // Update the new heights of the nodes
     p.updateHeight()
-    n.updateHeight()
+    
+    delay = SKAction.wait(forDuration: animationSpeed)
+    
+    var position = n.calculateOffset()
+    n.run(SKAction.sequence([delay, SKAction.move(to: position, duration: animationSpeed)]))
+
+    position = p.calculateOffset()
+    p.run(SKAction.sequence([delay, SKAction.move(to: position, duration: animationSpeed)]))
+
+    position = c.calculateOffset()
+    c.run(SKAction.sequence([delay, SKAction.move(to: position, duration: animationSpeed)]))
+    
     var parented = grandparent
     while let node = parented as? RedBlackSKNode {
-      node.updateHeight()
+      position = node.calculateOffset()
+      node.run(SKAction.sequence([delay, SKAction.move(to: position, duration: animationSpeed)]))
       parented = node.parent!
     }
-        
+    
     // Fade in the connection nodes of g->n->p->c
     if let g = grandparent as? RedBlackSKNode {
       g.fadeInConnectionNode(relation: n.parentRelation, delay: animationSpeed)
     }
     
-    p.fadeInConnectionNode(relation: child.parentRelation, delay: animationSpeed)
+    p.fadeInConnectionNode(relation: c.parentRelation, delay: animationSpeed)
     n.fadeInConnectionNode(relation: p.parentRelation, delay: animationSpeed)
   }
 }
@@ -379,25 +392,21 @@ class RedBlackSKNode : SKShapeNode
       return
     }
     
-    // Create the children nodes
+    // Create and add the children nodes
     rbChildren = [RedBlackSKNode(modelNode: m.leftChild), RedBlackSKNode(modelNode: m.rightChild)]
-        
+
+    addChild(leftChild!)
+    addChild(rightChild!)
+    
     // Recursively call on the children
     leftChild!.drawFromModel(model: m.leftChild)
     rightChild!.drawFromModel(model: m.rightChild)
     
     // set the height
     height = max(leftChild!.height + 1, rightChild!.height + 1)
-    
-    let leftOffset = leftChild!.calculateOffset()
-    let rightOffset = rightChild!.calculateOffset()
-        
-    leftChild!.position = leftOffset
-    rightChild!.position = CGPoint(x: -rightOffset.x, y: rightOffset.y)
-
-    // Create the connection nodes to the children and add the children to the scene
-    addChild(leftChild!)
-    addChild(rightChild!)
+            
+    leftChild!.position = leftChild!.calculateOffset()
+    rightChild!.position = rightChild!.calculateOffset()
   }
   
   // Modifies the connection nodes to connect the node with its children
@@ -445,21 +454,32 @@ class RedBlackSKNode : SKShapeNode
   
   func updateHeight() {
     if let _ = key {
-      height = max(leftChild!.height, rightChild!.height)
+      height = max(leftChild!.height + 1, rightChild!.height + 1)
     }
     else {
       height = 0
     }
+    
+    // update the height of the parent if it exists
+    if let p = parent as? RedBlackSKNode {
+      p.updateHeight()
+    }
   }
   
   // Caculate the offset of a node to its parent
-  func calculateOffset() -> (CGPoint) {
-        
+  func calculateOffset() -> CGPoint {
     let x = pow(2.0, CGFloat(height - 1)) * baseDistance + pow(2.0, CGFloat(height)) * nodeRadius
     
+    switch parentRelation {
+    case .left:
+      return CGPoint(x: -x, y: -baseHeight)
     
-    
-    return CGPoint(x: -x, y: -baseHeight)
+    case .right:
+      return CGPoint(x: x, y: -baseHeight)
+      
+    case .no_parent:
+      return CGPoint()
+    }
   }
   
   func fadeOutConnectionNode(relation : ParentRelation) {
