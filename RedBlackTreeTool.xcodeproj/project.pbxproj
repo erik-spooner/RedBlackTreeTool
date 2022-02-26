@@ -10,6 +10,7 @@
 		0345510827BB1B7E00E565CD /* RedBlackTreeAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0345510727BB1B7E00E565CD /* RedBlackTreeAnimation.swift */; };
 		0381ED9227BA277600380AA1 /* RedBlackTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381ED9127BA277600380AA1 /* RedBlackTree.swift */; };
 		0381ED9827BA287900380AA1 /* TreeScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0381ED9727BA287900380AA1 /* TreeScene.sks */; };
+		038DDB2C27C8CE85000EBC7A /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038DDB2B27C8CE85000EBC7A /* Utilities.swift */; };
 		03CA7D7F27B6E8EB00D1C74F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CA7D7E27B6E8EB00D1C74F /* AppDelegate.swift */; };
 		03CA7D8527B6E8EB00D1C74F /* TreeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CA7D8427B6E8EB00D1C74F /* TreeScene.swift */; };
 		03CA7D8727B6E8EB00D1C74F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CA7D8627B6E8EB00D1C74F /* ViewController.swift */; };
@@ -21,6 +22,7 @@
 		0381ED9127BA277600380AA1 /* RedBlackTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedBlackTree.swift; sourceTree = "<group>"; };
 		0381ED9727BA287900380AA1 /* TreeScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = TreeScene.sks; sourceTree = "<group>"; };
 		0381ED9B27BA28C300380AA1 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		038DDB2B27C8CE85000EBC7A /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		03CA7D7B27B6E8EB00D1C74F /* RedBlackTreeTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RedBlackTreeTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03CA7D7E27B6E8EB00D1C74F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		03CA7D8427B6E8EB00D1C74F /* TreeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeScene.swift; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 				03CA7D8427B6E8EB00D1C74F /* TreeScene.swift */,
 				0381ED9127BA277600380AA1 /* RedBlackTree.swift */,
 				0345510727BB1B7E00E565CD /* RedBlackTreeAnimation.swift */,
+				038DDB2B27C8CE85000EBC7A /* Utilities.swift */,
 				03CA7D8627B6E8EB00D1C74F /* ViewController.swift */,
 				03CA7D8A27B6E8EE00D1C74F /* Main.storyboard */,
 				0381ED9727BA287900380AA1 /* TreeScene.sks */,
@@ -139,6 +142,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				038DDB2C27C8CE85000EBC7A /* Utilities.swift in Sources */,
 				03CA7D8727B6E8EB00D1C74F /* ViewController.swift in Sources */,
 				0381ED9227BA277600380AA1 /* RedBlackTree.swift in Sources */,
 				03CA7D8527B6E8EB00D1C74F /* TreeScene.swift in Sources */,

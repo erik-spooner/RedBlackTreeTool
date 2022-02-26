@@ -66,7 +66,7 @@ class RedBlackTree
     
     
     while(node != nil) {
-      animationQueue.append(AnimationType.highlight(node: NodeIdentification(k: node!.key, p: parentKey, r: parentRelation), description: "Comparing the current node, \(node!.key), with the desired key of \(key)"))
+      animationQueue.append(AnimationType.highlight(nodes: [node!.identifier], description: "Comparing the current node, \(node!.key), with the desired key of \(key)"))
       
       // Left traversal
       if key < node!.key {
@@ -92,7 +92,7 @@ class RedBlackTree
       }
     }
     
-    animationQueue.append(AnimationType.highlight(node: NodeIdentification(k: nil, p: parentKey, r: parentRelation), description: "Nil node encountered. Thus key does not exist in the tree"))
+    animationQueue.append(AnimationType.highlight(nodes: [NodeIdentification(k: nil, p: parentKey, r: parentRelation)], description: "Nil node encountered. Thus key does not exist in the tree"))
     
     animationQueue.append(AnimationType.text(description: "Ending find operation for \(key), returning nil as key was not found"))
 
@@ -113,44 +113,52 @@ class RedBlackTree
     var parent : RedBlackNode? = nil
     var node = root
     
+    var parentKey : Int? = nil
+    var parentRelation : ParentRelation = .no_parent
+    
     while(node != nil) {
       parent = node
-
+      
+      animationQueue.append(AnimationType.highlight(nodes: [node!.identifier], description: "Comparing the current node, \(node!.key), with the desired key of \(key)"))
+      
       // Left traversal
       if key < node!.key {
         animationQueue.append(AnimationType.text(description: "\(key) < \(node!.key) so traversing to left child of node"))
+        
+        parentKey = node!.key
+        parentRelation = .left
         node = node!.leftChild
       }
       // Right traversal
       else if key > node!.key {
         animationQueue.append(AnimationType.text(description: "\(key) > \(node!.key) so traversing to right child of node"))
+        
+        parentKey = node!.key
+        parentRelation = .right
         node = node!.rightChild
       }
+      // The node's key is the same as the given key so we have found the one that we are looking for
       else {
-        animationQueue.append(AnimationType.text(description: "\(key) = \(node!.key). Key already exists in the Tree"))
-        animationQueue.append(AnimationType.text(description: "Ending insert operation for \(key), returning false as \(key) already exists in the tree"))
-
-        // return false if the key is already in the tree
+        animationQueue.append(AnimationType.text(description: "\(key) = \(node!.key), the node already exists in the tree"))
+        animationQueue.append(AnimationType.text(description: "Ending insert operation for \(key), returning false as the node already exists"))
         return false
       }
     }
-    
+
     animationQueue.append(AnimationType.text(description: "Nil node encountered. Place for insertion has been found"))
     
     // Create the new node and assign the parent/child relationship
-    animationQueue.append(AnimationType.text(description: "Create a red node for \(key)"))
     var n = RedBlackNode(key: key, colour: .red)
     n.parent = parent
     
+    animationQueue.append(AnimationType.nodeCreation(node: NodeIdentification(k: key, p: parentKey, r: parentRelation), description: "Create a red node for \(key)"))
     
+    // If the parent exists make the new node a child
     if let p = parent {
-      animationQueue.append(AnimationType.text(description: "Attach \(key) to its parent"))
       p.children[n.parentRelation] = n
     }
     
-
     animationQueue.append(AnimationType.text(description: "Proceeding to balance the tree and ensure Red Black properties are maintained"))
-
     
     // After we have inserted the new node, we need to balance the tree by starting at the node that we inserted and moving up the tree
     while (true) {
@@ -158,14 +166,14 @@ class RedBlackTree
       // Case 1 the parent is a black node so we are all good
       if let p = n.parent {
         if p.colour == .black {
-          animationQueue.append(AnimationType.text(description: "Parent of \(n.key) is black, so red black properties were not violated and tree is still balanced"))
+          animationQueue.append(AnimationType.highlight(nodes: [NodeIdentification(k: p.key, p: nil, r: .no_parent)], description: "Parent of \(n.key) is black, so red black properties were not violated and tree is still balanced"))
           break
         }
       }
       // Case 0 the parent does not exist, so we are inserting the root node
       else {
         // if the parent does not exist make the new node the root
-        animationQueue.append(AnimationType.text(description: "Parent of \(n.key) does not exist, so assigning \(n.key) to be the new root node of the tree"))
+        animationQueue.append(AnimationType.highlight(nodes: [NodeIdentification(k: n.key, p: nil, r: .no_parent)], description: "Parent of \(n.key) does not exist, so assigning \(n.key) to be the new root node of the tree"))
         root = n
         break
       }
@@ -177,21 +185,27 @@ class RedBlackTree
       let g = p.parent! // GrandParent must exist and be black beacuse parent is red
       let uncle = p.parentRelation == .left ? g.rightChild : g.leftChild // Uncle may not exist
       
-      animationQueue.append(AnimationType.text(description: "Parent of \(n.key), is red with key \(p.key), and grandparent is black with key \(g.key)"))
+      var animatedNodes = [p.identifier, g.identifier]
+      animationQueue.append(AnimationType.highlight(nodes: animatedNodes, description: "Parent of \(n.key), is red with key \(p.key), and grandparent is black with key \(g.key)"))
       
       // Case 2 If the uncle is red. Repaint p and u black and g red
       if let u = uncle {
         if u.colour == .red {
           
-          animationQueue.append(AnimationType.text(description: "Uncle of \(n.key) exists and is red with key \(u.key)"))
-          animationQueue.append(AnimationType.text(description: "Repaint the parent, uncle and grandparent"))
+          animatedNodes = [u.identifier]
+          animationQueue.append(AnimationType.highlight(nodes: animatedNodes, description: "Uncle of \(n.key) exists and is red with key \(u.key)"))
           
           p.colour = .black
           u.colour = .black
           g.colour = .red
+
+          animatedNodes = [p.identifier, u.identifier, g.identifier]
+          let colours = [Colour.black, Colour.black, Colour.red]
+          animationQueue.append(AnimationType.colourChange(nodes: animatedNodes, colours: colours, description: "Repaint the parent, uncle and grandparent"))
           
+          animatedNodes = [g.identifier]
           // update the node to be the grandparent and continue
-          animationQueue.append(AnimationType.text(description: "Update the node that needs to be balanced to be the grandparent and continue"))
+          animationQueue.append(AnimationType.highlight(nodes: animatedNodes, description: "Update the node that needs to be balanced to be the grandparent and continue"))
           n = g
           continue
         }
@@ -541,8 +555,6 @@ class RedBlackTree
       c.parent! = parent
     }
     
-    
-        
     // update the former parent's parent, and the node's parent
     parent.parent = node
     node.children[parent.parentRelation] = parent
@@ -622,6 +634,11 @@ class RedBlackNode
   }
   
   private(set) var parentRelation : ParentRelation = .no_parent
+  var identifier : NodeIdentification {
+    get {
+      return NodeIdentification(k: key, p: parent?.key, r: parentRelation)
+    }
+  }
   
   var children : [RedBlackNode?] = [nil, nil]
   var leftChild : RedBlackNode? {
@@ -708,7 +725,11 @@ extension Array {
 enum AnimationType
 {
   case text(description: String)
-  case highlight(node : NodeIdentification, description : String)
+  case highlight(nodes : [NodeIdentification], description : String)
+  case nodeCreation(node : NodeIdentification, description : String)
+  case nodeDeletion(node : NodeIdentification, description : String)
+  case colourChange(nodes : [NodeIdentification], colours : [Colour], description : String)
+  case rotationUp(node : NodeIdentification, description : String)
 }
 
 struct NodeIdentification {

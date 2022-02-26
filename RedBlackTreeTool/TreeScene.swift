@@ -20,6 +20,8 @@ class TreeScene: SKScene
     
     addChild(tree)
     
+    tree.drawFromTree()
+    
     _ = tree.tree.insert(key: 0)
     _ = tree.tree.insert(key: 1)
     _ = tree.tree.insert(key: 2)
@@ -27,8 +29,6 @@ class TreeScene: SKScene
     _ = tree.tree.insert(key: 4)
 
     tree.drawFromTree()
-    
-    _ = tree.tree.find(key: 7)
   }
   
   
@@ -62,6 +62,7 @@ class TreeScene: SKScene
     case 0x0:
 //      _ = tree.tree.insert(key: Int.random(in: 0...40))
 //      tree.drawFromTree()
+      tree.rotateUp(identifier: NodeIdentification(k: 4, p: nil, r: .no_parent))
       
       break
     
