@@ -339,7 +339,7 @@ class RedBlackTree
       
       animatedNodes = [n.identifier, child.identifier]
       animationQueue.append(AnimationType.swapNodes(nodes: animatedNodes, description: "Swap \(n.key) with its child \(child.key)"))
-      animationQueue.append(AnimationType.nodeDeletion(node: n.identifier, description: "Delete \(n.key)"))
+      animationQueue.append(AnimationType.nodeDeletion(node: NodeIdentification(k: nil, p: child.key, r: .left), description: "Delete \(n.key)"))
       if let parent = n.parent {
         parent.children[n.parentRelation] = child
       }
@@ -368,7 +368,7 @@ class RedBlackTree
       
       animatedNodes = [n.identifier, child.identifier]
       animationQueue.append(AnimationType.swapNodes(nodes: animatedNodes, description: "Swap \(n.key) with its child \(child.key)"))
-      animationQueue.append(AnimationType.nodeDeletion(node: n.identifier, description: "Delete \(n.key)"))
+      animationQueue.append(AnimationType.nodeDeletion(node: NodeIdentification(k: nil, p: child.key, r: .right), description: "Delete \(n.key)"))
       if let parent = n.parent {
         parent.children[n.parentRelation] = child
       }

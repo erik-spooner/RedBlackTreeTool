@@ -7,38 +7,53 @@
 
 import SpriteKit
 import GameplayKit
+import Combine
 
-class TreeScene: SKScene
+class TreeScene: SKScene, ObservableObject
 {
   private var tree : RedBlackSKTree = RedBlackSKTree()
-  
   private var oldTouchPoint : CGPoint = CGPoint()
   
+  var play : Bool = false
   
+  @Published var stepDescription = "A"
+  
+  var annimationRunning : Bool {
+    get { return tree.animationRunning }
+  }
+    
   override func didMove(to view: SKView) {
-    print(view.setFrameSize(NSSize(width: 1600, height: 1200)))
-    
+    backgroundColor = .white
+        
+    tree.drawFromTree()
     addChild(tree)
-    
-    tree.drawFromTree()
-    
-    _ = tree.tree.insert(key: 0)
-    _ = tree.tree.insert(key: 1)
-    _ = tree.tree.insert(key: 2)
-    _ = tree.tree.insert(key: 3)
-    _ = tree.tree.insert(key: 4)
-    _ = tree.tree.insert(key: 5)
-    _ = tree.tree.insert(key: 6)
-    _ = tree.tree.insert(key: 7)
-    _ = tree.tree.insert(key: 8)
-    _ = tree.tree.insert(key: 9)
-    _ = tree.tree.insert(key: 10)
-    _ = tree.tree.insert(key: 11)
-
-    tree.drawFromTree()
   }
   
+  func insert(key: Int) {
+    _ = tree.insert(key: key)
+  }
   
+  func remove(key: Int) {
+    _ = tree.remove(key: key)
+  }
+  
+  func find(key: Int) {
+    tree.find(key: key)
+  }
+  
+  func next() {
+    if !annimationRunning {
+      let s = tree.next()
+      print(s)
+      stepDescription = s
+      print(stepDescription)
+    }
+  }
+  
+  func previous() {
+    
+  }
+
   func touchDown(atPoint pos : CGPoint) {
     oldTouchPoint = pos
   }
@@ -50,6 +65,7 @@ class TreeScene: SKScene
   }
   
   func touchUp(atPoint pos : CGPoint) {
+    
   }
   
   override func mouseDown(with event: NSEvent) {
@@ -65,20 +81,7 @@ class TreeScene: SKScene
     
   override func keyDown(with event: NSEvent) {
     switch event.keyCode {
-    
-    case 0x0:
-//      _ = tree.tree.insert(key: Int.random(in: 0...40))
-//      tree.drawFromTree()
-      tree.rotateUp(identifier: NodeIdentification(k: 4, p: nil, r: .no_parent))
-      
-      break
-    
-    case 0x1:
-      // play next animation
-      tree.next()
-      break
-
-      
+            
     case 0x6:
       // zoom in
       tree.setScale(tree.xScale * 1.1)
@@ -108,5 +111,9 @@ class TreeScene: SKScene
   
   override func update(_ currentTime: TimeInterval) {
     tree.update()
+    
+    if play {
+      next()
+    }
   }
 }

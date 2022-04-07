@@ -7,12 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0345510827BB1B7E00E565CD /* RedBlackTreeAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0345510727BB1B7E00E565CD /* RedBlackTreeAnimation.swift */; };
-		0381ED9227BA277600380AA1 /* RedBlackTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381ED9127BA277600380AA1 /* RedBlackTree.swift */; };
 		0381ED9827BA287900380AA1 /* TreeScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0381ED9727BA287900380AA1 /* TreeScene.sks */; };
-		038DDB2C27C8CE85000EBC7A /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038DDB2B27C8CE85000EBC7A /* Utilities.swift */; };
+		039865D027E3D3540064B4C5 /* RedBlackTreeSUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039865CF27E3D3540064B4C5 /* RedBlackTreeSUIApp.swift */; };
+		039865D227E3D3540064B4C5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039865D127E3D3540064B4C5 /* ContentView.swift */; };
+		039865D427E3D3560064B4C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 039865D327E3D3560064B4C5 /* Assets.xcassets */; };
+		039865D727E3D3560064B4C5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 039865D627E3D3560064B4C5 /* Preview Assets.xcassets */; };
+		039865DC27E3D3DF0064B4C5 /* RedBlackTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381ED9127BA277600380AA1 /* RedBlackTree.swift */; };
+		039865DD27E3D3DF0064B4C5 /* TreeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CA7D8427B6E8EB00D1C74F /* TreeScene.swift */; };
+		039865DE27E3D3DF0064B4C5 /* RedBlackTreeAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0345510727BB1B7E00E565CD /* RedBlackTreeAnimation.swift */; };
+		039865DF27E3D59D0064B4C5 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038DDB2B27C8CE85000EBC7A /* Utilities.swift */; };
 		03CA7D7F27B6E8EB00D1C74F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CA7D7E27B6E8EB00D1C74F /* AppDelegate.swift */; };
-		03CA7D8527B6E8EB00D1C74F /* TreeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CA7D8427B6E8EB00D1C74F /* TreeScene.swift */; };
 		03CA7D8727B6E8EB00D1C74F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CA7D8627B6E8EB00D1C74F /* ViewController.swift */; };
 		03CA7D8C27B6E8EE00D1C74F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7D8A27B6E8EE00D1C74F /* Main.storyboard */; };
 /* End PBXBuildFile section */
@@ -23,6 +27,12 @@
 		0381ED9727BA287900380AA1 /* TreeScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = TreeScene.sks; sourceTree = "<group>"; };
 		0381ED9B27BA28C300380AA1 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		038DDB2B27C8CE85000EBC7A /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		039865CD27E3D3540064B4C5 /* RedBlackTreeSUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RedBlackTreeSUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		039865CF27E3D3540064B4C5 /* RedBlackTreeSUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedBlackTreeSUIApp.swift; sourceTree = "<group>"; };
+		039865D127E3D3540064B4C5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		039865D327E3D3560064B4C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		039865D627E3D3560064B4C5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		039865D827E3D3560064B4C5 /* RedBlackTreeSUI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RedBlackTreeSUI.entitlements; sourceTree = "<group>"; };
 		03CA7D7B27B6E8EB00D1C74F /* RedBlackTreeTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RedBlackTreeTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03CA7D7E27B6E8EB00D1C74F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		03CA7D8427B6E8EB00D1C74F /* TreeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeScene.swift; sourceTree = "<group>"; };
@@ -31,6 +41,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		039865CA27E3D3540064B4C5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		03CA7D7827B6E8EB00D1C74F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -41,10 +58,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		039865CE27E3D3540064B4C5 /* RedBlackTreeSUI */ = {
+			isa = PBXGroup;
+			children = (
+				03CA7D8427B6E8EB00D1C74F /* TreeScene.swift */,
+				0381ED9127BA277600380AA1 /* RedBlackTree.swift */,
+				0345510727BB1B7E00E565CD /* RedBlackTreeAnimation.swift */,
+				039865CF27E3D3540064B4C5 /* RedBlackTreeSUIApp.swift */,
+				039865D127E3D3540064B4C5 /* ContentView.swift */,
+				038DDB2B27C8CE85000EBC7A /* Utilities.swift */,
+				039865D327E3D3560064B4C5 /* Assets.xcassets */,
+				039865D827E3D3560064B4C5 /* RedBlackTreeSUI.entitlements */,
+				039865D527E3D3560064B4C5 /* Preview Content */,
+			);
+			path = RedBlackTreeSUI;
+			sourceTree = "<group>";
+		};
+		039865D527E3D3560064B4C5 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				039865D627E3D3560064B4C5 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		03CA7D7227B6E8EB00D1C74F = {
 			isa = PBXGroup;
 			children = (
 				03CA7D7D27B6E8EB00D1C74F /* RedBlackTreeTool */,
+				039865CE27E3D3540064B4C5 /* RedBlackTreeSUI */,
 				03CA7D7C27B6E8EB00D1C74F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -53,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				03CA7D7B27B6E8EB00D1C74F /* RedBlackTreeTool.app */,
+				039865CD27E3D3540064B4C5 /* RedBlackTreeSUI.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,10 +104,6 @@
 			isa = PBXGroup;
 			children = (
 				03CA7D7E27B6E8EB00D1C74F /* AppDelegate.swift */,
-				03CA7D8427B6E8EB00D1C74F /* TreeScene.swift */,
-				0381ED9127BA277600380AA1 /* RedBlackTree.swift */,
-				0345510727BB1B7E00E565CD /* RedBlackTreeAnimation.swift */,
-				038DDB2B27C8CE85000EBC7A /* Utilities.swift */,
 				03CA7D8627B6E8EB00D1C74F /* ViewController.swift */,
 				03CA7D8A27B6E8EE00D1C74F /* Main.storyboard */,
 				0381ED9727BA287900380AA1 /* TreeScene.sks */,
@@ -76,6 +115,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		039865CC27E3D3540064B4C5 /* RedBlackTreeSUI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 039865DB27E3D3560064B4C5 /* Build configuration list for PBXNativeTarget "RedBlackTreeSUI" */;
+			buildPhases = (
+				039865C927E3D3540064B4C5 /* Sources */,
+				039865CA27E3D3540064B4C5 /* Frameworks */,
+				039865CB27E3D3540064B4C5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RedBlackTreeSUI;
+			productName = RedBlackTreeSUI;
+			productReference = 039865CD27E3D3540064B4C5 /* RedBlackTreeSUI.app */;
+			productType = "com.apple.product-type.application";
+		};
 		03CA7D7A27B6E8EB00D1C74F /* RedBlackTreeTool */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 03CA7D9127B6E8EE00D1C74F /* Build configuration list for PBXNativeTarget "RedBlackTreeTool" */;
@@ -99,9 +155,12 @@
 		03CA7D7327B6E8EB00D1C74F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1240;
+				LastSwiftUpdateCheck = 1320;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
+					039865CC27E3D3540064B4C5 = {
+						CreatedOnToolsVersion = 13.2.1;
+					};
 					03CA7D7A27B6E8EB00D1C74F = {
 						CreatedOnToolsVersion = 12.4;
 					};
@@ -121,11 +180,21 @@
 			projectRoot = "";
 			targets = (
 				03CA7D7A27B6E8EB00D1C74F /* RedBlackTreeTool */,
+				039865CC27E3D3540064B4C5 /* RedBlackTreeSUI */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		039865CB27E3D3540064B4C5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				039865D727E3D3560064B4C5 /* Preview Assets.xcassets in Resources */,
+				039865D427E3D3560064B4C5 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		03CA7D7927B6E8EB00D1C74F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -138,15 +207,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		039865C927E3D3540064B4C5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				039865DF27E3D59D0064B4C5 /* Utilities.swift in Sources */,
+				039865DD27E3D3DF0064B4C5 /* TreeScene.swift in Sources */,
+				039865D227E3D3540064B4C5 /* ContentView.swift in Sources */,
+				039865D027E3D3540064B4C5 /* RedBlackTreeSUIApp.swift in Sources */,
+				039865DE27E3D3DF0064B4C5 /* RedBlackTreeAnimation.swift in Sources */,
+				039865DC27E3D3DF0064B4C5 /* RedBlackTree.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		03CA7D7727B6E8EB00D1C74F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				038DDB2C27C8CE85000EBC7A /* Utilities.swift in Sources */,
 				03CA7D8727B6E8EB00D1C74F /* ViewController.swift in Sources */,
-				0381ED9227BA277600380AA1 /* RedBlackTree.swift in Sources */,
-				03CA7D8527B6E8EB00D1C74F /* TreeScene.swift in Sources */,
-				0345510827BB1B7E00E565CD /* RedBlackTreeAnimation.swift in Sources */,
 				03CA7D7F27B6E8EB00D1C74F /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -165,6 +243,60 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		039865D927E3D3560064B4C5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_ENTITLEMENTS = RedBlackTreeSUI/RedBlackTreeSUI.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"RedBlackTreeSUI/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Erik-Spooner.RedBlackTreeSUI";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		039865DA27E3D3560064B4C5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_ENTITLEMENTS = RedBlackTreeSUI/RedBlackTreeSUI.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"RedBlackTreeSUI/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Erik-Spooner.RedBlackTreeSUI";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		03CA7D8F27B6E8EE00D1C74F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -321,6 +453,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		039865DB27E3D3560064B4C5 /* Build configuration list for PBXNativeTarget "RedBlackTreeSUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				039865D927E3D3560064B4C5 /* Debug */,
+				039865DA27E3D3560064B4C5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		03CA7D7627B6E8EB00D1C74F /* Build configuration list for PBXProject "RedBlackTreeTool" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

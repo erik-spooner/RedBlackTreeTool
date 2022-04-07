@@ -14,57 +14,181 @@ class RedBlackSKTree: SKNode {
   var nilNodesVisible : Bool = true
   var animationSpeed : Double = 3.0
   
-  var tree = RedBlackTree()
+  private var lock : NSLock = NSLock()
+  private (set) var animationRunning = false
+  
+  private var tree = RedBlackTree()
   var rootNode : RedBlackSKNode = RedBlackSKNode(modelNode: nil)
+  private var swapedNode : RedBlackSKNode? = nil // The node that is out of place because it has been moved
   
   func drawFromTree() {
+    lock.lock()
     removeAllChildren()
     
     rootNode = RedBlackSKNode(modelNode: tree.root)
     rootNode.drawFromModel(model: tree.root)
     
     addChild(rootNode)
+    lock.unlock()
   }
   
-  func next() {
-    if let a = tree .next() {
-      applyAnimation(animation: a)
+  func next() -> String {
+    if let a = tree.next() {
+      return applyAnimation(animation: a)
     } else {
-      print("No animation queued")
+      return "No animation queued"
+    }
+  }
+  
+  func previous() -> String {
+    if let a = tree.previous() {
+      return applyAnimation(animation: a)
+    } else {
+      return "No animation queued"
     }
   }
   
   func update() {
+    lock.lock()
     rootNode.updateConnectionNodes()
+    lock.unlock()
   }
   
-  private func applyAnimation(animation : AnimationType) {
+  func find(key: Int) {
+    swapedNode = nil
+    tree.find(key: key)
+  }
+  
+  func insert(key: Int) -> Bool {
+    swapedNode = nil
+    drawFromTree()
+    return tree.insert(key: key)
+  }
+  
+  func remove(key: Int) -> Bool {
+    swapedNode = nil
+    drawFromTree()
+    return tree.remove(key: key)
+  }
+  
+  private func applyAnimation(animation : AnimationType) -> String {
+    lock.lock()
+    
+    var description = ""
+    animationRunning = true
     
     switch animation {
     case .text(let d):
-      print(d)
+      description = d
+      run(SKAction.wait(forDuration: 2.0), completion: {self.animationRunning = false})
       break
     
     case .highlight(let i, let d):
       highlight(identifiers: i)
-      print(d)
+      description = d
       break
-      
+
     case .nodeCreation(let i, let d):
       createNode(identifier: i)
-      print(d)
+      description = d
       break
-      
+
     case .colourChange(let i, let c, let d):
       colourChange(identifiers: i, colours: c)
-      print(d)
+      description = d
       break
-      
+
+    case .rotationUp(let i, let d):
+      rotateUp(identifier: i[0])
+      description = d
+      break
+
+    case .nodeDeletion(let i, let d):
+      deleteNode(identifier: i)
+      description = d
+      break
+
+    case .swapNodes(let i, let d):
+      swapNodes(identifiers: i)
+      description = d
+      break
+
     default:
       print("Animation Type not implemented")
+      animationRunning = false
     }
+    lock.unlock()
+    
+    return description
   }
   
+  private func reverseAnimation(animation : AnimationType) -> String {
+    lock.lock()
+    
+    var description = ""
+    animationRunning = true
+    
+    switch animation {
+      // dont need to do anything for text
+    case .text(let d):
+      description = d
+      run(SKAction.wait(forDuration: 2.0), completion: {self.animationRunning = false})
+      break
+    
+    case .highlight(let i, let d):
+      // dont need to do anything for highlight
+      highlight(identifiers: i)
+      description = d
+      break
+
+    case .nodeCreation(let i, let d):
+      // instead of creating a node delete it
+      deleteNode(identifier: i)
+      description = d
+      break
+
+    case .colourChange(let i, var c, let d):
+      // Reverse the colours
+      for var colour in c {
+        if colour == .black {
+          colour = .red
+        }
+        else {
+          colour = .black
+        }
+      }
+      
+      colourChange(identifiers: i, colours: c)
+      description = d
+      break
+
+    case .rotationUp(let i, let d):
+      // rotate up the former parent instead
+      rotateUp(identifier: i[1])
+      description = d
+      break
+
+    case .nodeDeletion(let i, let d):
+      // Create the node instead
+      createNode(identifier: i)
+      description = d
+      break
+
+    case .swapNodes(let i, let d):
+      // Dont need to change anything
+      swapNodes(identifiers: i)
+      description = d
+      break
+
+    default:
+      print("Animation Type not implemented")
+      animationRunning = false
+    }
+    lock.unlock()
+    
+    return description
+  }
+
   // Given the identifier for a node return the node itself
   private func find(identifier: NodeIdentification) -> RedBlackSKNode {
     var key : Int
@@ -72,6 +196,14 @@ class RedBlackSKTree: SKNode {
     
     if let nodeKey = identifier.key {
       key = nodeKey
+      
+      // Check for if the node that we are looking for is the one that may be out of place in the tree
+      if let swapped = swapedNode {
+        if swapped.key == key {
+          return swapedNode!
+        }
+      }
+      
     }
     else if let parentKey = identifier.parent {
       // The node is nil but the parent exists
@@ -123,9 +255,9 @@ class RedBlackSKTree: SKNode {
       let old = SKAction.run {
         node.strokeColor = currentColour
       }
-      
+            
       // Highlight the node with the given colour for 2 seconds before changing it back to the original colour
-      node.run(SKAction.sequence([highlight, SKAction.wait(forDuration: 2.0), old]))
+      node.run(SKAction.sequence([highlight, SKAction.wait(forDuration: 2.0), old]), completion: {self.animationRunning = false})
     }
   }
   
@@ -143,25 +275,35 @@ class RedBlackSKTree: SKNode {
     
     // give it a new key
     node.key = identifier.key
-    
+        
     // New nodes are created as red nodes
     node.strokeColor = .red
     
     // create and position nil children
-    node.leftChild = RedBlackSKNode(modelNode: nil)
-    node.rightChild = RedBlackSKNode(modelNode: nil)
-    
-    let offset = node.calculateOffset()
-    
-    node.leftChild!.position = offset
-    node.rightChild!.position = CGPoint(x: -offset.x, y: offset.y)
-    
-    node.addChild(node.leftChild!)
-    node.addChild(node.rightChild!)
-    
-    node.height = 1
+    for i in 0...1 {
+      node.rbChildren[i] = RedBlackSKNode(modelNode: nil)
+      node.rbChildren[i]!.alpha = 0.0
+      
+      node.addChild(node.rbChildren[i]!)
+      node.rbChildren[i]!.position = node.rbChildren[i]!.calculateOffset()
+    }
     
     node.updateConnectionNodes()
+    
+    for child in node.rbChildren {
+      node.fadeOutConnectionNode(relation: child!.parentRelation)
+      node.fadeInConnectionNode(relation: child!.parentRelation, duration: 1.0)
+      
+      child!.run(SKAction.fadeIn(withDuration: 1.0), completion: {self.animationRunning = false})
+    }
+  }
+  
+  private func deleteNode(identifier: NodeIdentification) {
+    let node = find(identifier: identifier)
+    
+    node.key = nil
+    
+    animationRunning = false
   }
   
   private func colourChange(identifiers : [NodeIdentification], colours : [Colour]) {
@@ -180,6 +322,8 @@ class RedBlackSKTree: SKNode {
         break
       }
     }
+    
+    animationRunning = false
   }
   
   func rotateUp(identifier: NodeIdentification) {
@@ -250,7 +394,7 @@ class RedBlackSKTree: SKNode {
     delay = SKAction.wait(forDuration: animationSpeed)
     
     var position = n.calculateOffset()
-    n.run(SKAction.sequence([delay, SKAction.move(to: position, duration: animationSpeed)]))
+    n.run(SKAction.sequence([delay, SKAction.move(to: position, duration: animationSpeed)]), completion: {self.animationRunning = false})
 
     position = p.calculateOffset()
     p.run(SKAction.sequence([delay, SKAction.move(to: position, duration: animationSpeed)]))
@@ -272,6 +416,21 @@ class RedBlackSKTree: SKNode {
     
     p.fadeInConnectionNode(relation: c.parentRelation, delay: animationSpeed)
     n.fadeInConnectionNode(relation: p.parentRelation, delay: animationSpeed)
+    
+  }
+  
+  func swapNodes(identifiers: [NodeIdentification]) {
+    assert(identifiers.count == 2)
+    
+    let nodeA = find(identifier: identifiers[0]) // node
+    let nodeB = find(identifier: identifiers[1]) // child / predessor
+    
+    let keyA = nodeA.key
+    nodeA.key = nodeB.key
+    nodeB.key = keyA
+    
+    swapedNode = nodeB // NodeB will can now be out of place
+    animationRunning = false
   }
 }
 
@@ -286,6 +445,13 @@ class RedBlackSKNode : SKShapeNode
       }
       else {
         label.text = "nil"
+        
+        strokeColor = .black
+        
+        removeAllChildren()
+        addChild(label)
+        rbChildren = [nil, nil]
+        connectionNodes = [nil, nil]
       }
     }
   }
@@ -482,16 +648,16 @@ class RedBlackSKNode : SKShapeNode
     }
   }
   
-  func fadeOutConnectionNode(relation : ParentRelation) {
+  func fadeOutConnectionNode(relation : ParentRelation, duration : Double = 0.0) {
     if let n = connectionNodes[relation] {
       connectionLocked[relation] = true
-      n.run(SKAction.fadeOut(withDuration: 1.0))
+      n.run(SKAction.fadeOut(withDuration: duration))
     }
   }
-  func fadeInConnectionNode(relation : ParentRelation, delay : Double = 0.0) {
+  func fadeInConnectionNode(relation : ParentRelation, duration : Double = 0.0, delay : Double = 0.0) {
     if let n = connectionNodes[relation] {
       let unlock = SKAction.run { self.connectionLocked[relation] = false }
-      let action = SKAction.sequence([SKAction.wait(forDuration: delay), unlock, SKAction.fadeIn(withDuration: 1.0)])
+      let action = SKAction.sequence([SKAction.wait(forDuration: delay), unlock, SKAction.fadeIn(withDuration: duration)])
       n.run(action)
     }
   }
