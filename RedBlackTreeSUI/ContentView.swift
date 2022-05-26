@@ -64,7 +64,7 @@ struct ContentView: View {
   }
 
   func skip() {
-    print("Skip")
+    scene.skip()
   }
     
   private func createTopButtons() -> some View {

@@ -19,7 +19,6 @@ class RedBlackSKTree: SKNode {
   
   private var tree = RedBlackTree()
   var rootNode : RedBlackSKNode = RedBlackSKNode(modelNode: nil)
-  private var swapedNode : RedBlackSKNode? = nil // The node that is out of place because it has been moved
   
   func drawFromTree() {
     lock.lock()
@@ -42,10 +41,17 @@ class RedBlackSKTree: SKNode {
   
   func previous() -> String {
     if let a = tree.previous() {
-      return applyAnimation(animation: a)
+      return reverseAnimation(animation: a)
     } else {
       return "No animation queued"
     }
+  }
+
+  func skip() -> String {
+    tree.skip()
+    drawFromTree()
+    
+    return next()
   }
   
   func update() {
@@ -55,18 +61,15 @@ class RedBlackSKTree: SKNode {
   }
   
   func find(key: Int) {
-    swapedNode = nil
     tree.find(key: key)
   }
   
   func insert(key: Int) -> Bool {
-    swapedNode = nil
     drawFromTree()
     return tree.insert(key: key)
   }
   
   func remove(key: Int) -> Bool {
-    swapedNode = nil
     drawFromTree()
     return tree.remove(key: key)
   }
@@ -88,13 +91,13 @@ class RedBlackSKTree: SKNode {
       description = d
       break
 
-    case .nodeCreation(let i, let d):
-      createNode(identifier: i)
+    case .nodeCreation(let i, let k, let d):
+      createNode(identifier: i, key: k)
       description = d
       break
 
     case .colourChange(let i, let c, let d):
-      colourChange(identifiers: i, colours: c)
+      colourChange(identifiers: i, colours: c, reverse: false)
       description = d
       break
 
@@ -103,7 +106,7 @@ class RedBlackSKTree: SKNode {
       description = d
       break
 
-    case .nodeDeletion(let i, let d):
+    case .nodeDeletion(let i, _, let d):
       deleteNode(identifier: i)
       description = d
       break
@@ -141,24 +144,14 @@ class RedBlackSKTree: SKNode {
       description = d
       break
 
-    case .nodeCreation(let i, let d):
+    case .nodeCreation(let i, _, let d):
       // instead of creating a node delete it
       deleteNode(identifier: i)
       description = d
       break
 
-    case .colourChange(let i, var c, let d):
-      // Reverse the colours
-      for var colour in c {
-        if colour == .black {
-          colour = .red
-        }
-        else {
-          colour = .black
-        }
-      }
-      
-      colourChange(identifiers: i, colours: c)
+    case .colourChange(let i, let c, let d):
+      colourChange(identifiers: i, colours: c, reverse: true)
       description = d
       break
 
@@ -168,9 +161,9 @@ class RedBlackSKTree: SKNode {
       description = d
       break
 
-    case .nodeDeletion(let i, let d):
+    case .nodeDeletion(let i, let k, let d):
       // Create the node instead
-      createNode(identifier: i)
+      createNode(identifier: i, key: k)
       description = d
       break
 
@@ -194,18 +187,7 @@ class RedBlackSKTree: SKNode {
     var key : Int
     var node : RedBlackSKNode
     
-    if let nodeKey = identifier.key {
-      key = nodeKey
-      
-      // Check for if the node that we are looking for is the one that may be out of place in the tree
-      if let swapped = swapedNode {
-        if swapped.key == key {
-          return swapedNode!
-        }
-      }
-      
-    }
-    else if let parentKey = identifier.parent {
+    if let parentKey = identifier.parent {
       // The node is nil but the parent exists
       key = parentKey
     }
@@ -232,13 +214,8 @@ class RedBlackSKTree: SKNode {
       assert(node.key != nil)
     }
     
-    if identifier.key == nil {
-      // If we are looking for a nil node
-      return node.rbChildren[identifier.relation]!
-    }
-    else {
-      return node
-    }
+    // Now that we have found the parent return the correct child
+    return node.rbChildren[identifier.relation]!
   }
   
   private func highlight(identifiers: [NodeIdentification], colour : NSColor = .yellow) {
@@ -262,19 +239,16 @@ class RedBlackSKTree: SKNode {
   }
   
   // The identifier key is the node to be created
-  private func createNode(identifier: NodeIdentification) {
-    // The key of the new node should not be nil
-    assert(identifier.key != nil)
-    
+  private func createNode(identifier: NodeIdentification, key: Int) {
     // find the visual
-    let node = find(identifier: NodeIdentification(k: nil, p: identifier.parent, r: identifier.relation))
+    let node = find(identifier: NodeIdentification(p: identifier.parent, r: identifier.relation))
     
     // The node found should be nil with height 0
     assert(node.key == nil)
     assert(node.height == 0)
     
-    // give it a new key
-    node.key = identifier.key
+    // give it the new key
+    node.key = key
         
     // New nodes are created as red nodes
     node.strokeColor = .red
@@ -306,13 +280,13 @@ class RedBlackSKTree: SKNode {
     animationRunning = false
   }
   
-  private func colourChange(identifiers : [NodeIdentification], colours : [Colour]) {
+  private func colourChange(identifiers : [NodeIdentification], colours : [(new : Colour, old : Colour)], reverse : Bool) {
     assert(identifiers.count == colours.count)
     
     for i in 0...identifiers.count-1 {
       let node = find(identifier: identifiers[i])
       
-      switch colours[i] {
+      switch !reverse ? colours[i].new : colours[i].old {
       case .black:
         node.strokeColor = .black
         break
@@ -429,7 +403,6 @@ class RedBlackSKTree: SKNode {
     nodeA.key = nodeB.key
     nodeB.key = keyA
     
-    swapedNode = nodeB // NodeB will can now be out of place
     animationRunning = false
   }
 }
@@ -452,6 +425,8 @@ class RedBlackSKNode : SKShapeNode
         addChild(label)
         rbChildren = [nil, nil]
         connectionNodes = [nil, nil]
+        
+        updateHeight()
       }
     }
   }

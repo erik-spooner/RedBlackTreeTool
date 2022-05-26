@@ -43,15 +43,20 @@ class TreeScene: SKScene, ObservableObject
   
   func next() {
     if !annimationRunning {
-      let s = tree.next()
-      print(s)
-      stepDescription = s
-      print(stepDescription)
+      stepDescription = tree.next()
     }
   }
   
   func previous() {
-    
+    if !annimationRunning {
+      stepDescription = tree.previous()
+    }
+  }
+  
+  func skip() {
+    if !annimationRunning {
+      stepDescription = tree.skip()
+    }
   }
 
   func touchDown(atPoint pos : CGPoint) {
