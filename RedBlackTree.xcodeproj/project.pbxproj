@@ -18,6 +18,7 @@
 		031D09F228C95FAB001AE714 /* RedBlackTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031D09F128C95FAB001AE714 /* RedBlackTree.swift */; };
 		031D09F428C95FC8001AE714 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031D09F328C95FC8001AE714 /* Utilities.swift */; };
 		03474CF628C9624B00A32F40 /* RedBlackNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03474CF528C9624B00A32F40 /* RedBlackNodeView.swift */; };
+		03E7A42D28D3A9CA00CB8C16 /* AnimationUtilites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E7A42C28D3A9CA00CB8C16 /* AnimationUtilites.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		031D09F128C95FAB001AE714 /* RedBlackTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedBlackTree.swift; sourceTree = "<group>"; };
 		031D09F328C95FC8001AE714 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		03474CF528C9624B00A32F40 /* RedBlackNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedBlackNodeView.swift; sourceTree = "<group>"; };
+		03E7A42C28D3A9CA00CB8C16 /* AnimationUtilites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationUtilites.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +110,7 @@
 				031D09C628C93899001AE714 /* ViewController.swift */,
 				031D09EF28C95F62001AE714 /* TreeScene.swift */,
 				031D09F128C95FAB001AE714 /* RedBlackTree.swift */,
+				03E7A42C28D3A9CA00CB8C16 /* AnimationUtilites.swift */,
 				031D09F328C95FC8001AE714 /* Utilities.swift */,
 				031D09C828C9389A001AE714 /* Assets.xcassets */,
 				031D09CA28C9389A001AE714 /* Main.storyboard */,
@@ -265,6 +268,7 @@
 			files = (
 				03474CF628C9624B00A32F40 /* RedBlackNodeView.swift in Sources */,
 				031D09F028C95F62001AE714 /* TreeScene.swift in Sources */,
+				03E7A42D28D3A9CA00CB8C16 /* AnimationUtilites.swift in Sources */,
 				031D09F228C95FAB001AE714 /* RedBlackTree.swift in Sources */,
 				031D09C728C93899001AE714 /* ViewController.swift in Sources */,
 				031D09F428C95FC8001AE714 /* Utilities.swift in Sources */,

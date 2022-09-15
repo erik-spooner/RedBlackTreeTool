@@ -224,7 +224,7 @@ class RedBlackTree
       
       // The node is an external node to g so we rotate up p and swap the colours for p and g after this the tree is fine
       animatedNodes = [p.identifier, g.rotatedIdenfication(r: p.parentRelation)]
-      animationQueue.append(AnimationType.rotationUp(nodes: animatedNodes, description: "The node is an external node of its grandparent, so rotate up the parent the grandparents position's position"))
+      animationQueue.append(AnimationType.rotationUp(nodes: animatedNodes, description: "The node is an external node of its grandparent, so rotate up the parent to the grandparent position"))
       _ = rotateUp(node: p)
       
       animatedNodes = [p.identifier, g.identifier]

@@ -35,7 +35,16 @@ class TreeScene : NSView
   }
   
   private (set) var stepDescription : String = " "
-    
+  var animationPublisher : PassthroughSubject<Bool, Never>
+  
+  private (set) var animationRunning : Bool = false {
+    didSet {
+      animationPublisher.send(animationRunning)
+    }
+  }
+  private var animationHandler : AnimationGroupHandler = AnimationGroupHandler()
+  private var animationHandlerReceiver : AnyCancellable?
+  
   init() {
     rootNode = RedBlackNodeView(modelNode: nil)
     model = RedBlackTree()
@@ -44,13 +53,12 @@ class TreeScene : NSView
     rootNodePositionConstraints = [NSLayoutConstraint]()
     depthTable = [[NSView]]()
     
-    publisher = PassthroughSubject<Any, Never>()
+    animationPublisher = PassthroughSubject<Bool, Never>()
 
     super.init(frame: NSRect(x: 0, y: 0, width: 500, height: 500))
     
-//    wantsLayer = true
-//    layer!.backgroundColor = NSColor.gray.cgColor
-    
+    animationHandlerReceiver = animationHandler.completionPublisher.sink(receiveValue: { _ in self.animationRunning = false })
+        
     self.translatesAutoresizingMaskIntoConstraints = false
   }
   
@@ -244,21 +252,23 @@ class TreeScene : NSView
       // find the node coresponding to the key
       let node = find(identifier: identifier)
 
-      //
-      let currentColour = node.color
+      // grab the current color of the node
+      let currentColor = node.color
       
-      NSAnimationContext.runAnimationGroup({ context in
-        context.duration = 1
-                
+      // Set the color of the node to be the highlighted color for 1 second
+      var animation1 = AnimationGroup()
+      animation1.duration = 1
+      animation1.function = {
         node.animator().color = color
-                        
-      }, completionHandler: {
-        NSAnimationContext.runAnimationGroup({ context in
-          context.duration = 1
-                  
-          node.animator().color = currentColour
-        })
-      })
+      }
+      
+      // Turn the color back to the original color
+      var animation2 = AnimationGroup()
+      animation2.duration = 1
+      animation2.function = { node.animator().color = currentColor }
+      
+      animationHandler.addAnimation(animation: animation1)
+      animationHandler.addAnimation(animation: animation2)
     }
   }
 
@@ -288,44 +298,43 @@ class TreeScene : NSView
 
     //
     node.setLinkNodesAlpha(alpha: 0.0, relation: .no_parent)
-    
-    createDepthTable()
 
-    // Have the new nodes and the links to the parent node fade in
-    NSAnimationContext.runAnimationGroup({ context in
-      context.duration = 1
-      context.allowsImplicitAnimation = true
-              
-      // New nodes are created as red nodes
+    // Change the color of the node to red and modify the adjacency constraints to move the nodes to their new postion
+    var animation1 = AnimationGroup()
+    animation1.duration = 1
+    animation1.function = {
       node.animator().color = .red
             
-      addAdjacencyConstraints()
+      self.createDepthTable()
+      self.addAdjacencyConstraints()
       
       self.layoutSubtreeIfNeeded()
-      
-    }, completionHandler: {
-      NSAnimationContext.runAnimationGroup({ context in
-        context.duration = 1
-        context.allowsImplicitAnimation = true
-
-        node.leftChild!.animator().alphaValue = 1.0
-        node.rightChild!.animator().alphaValue = 1.0
-            
-        node.setLinkNodesAlpha(alpha: 1.0, relation: .no_parent)
-      })
-    })
+    }
+    
+    // Have the new nil nodes and the links to the parent node fade in
+    var animation2 = AnimationGroup()
+    animation2.duration = 1
+    animation2.function = {
+      node.leftChild!.animator().alphaValue = 1.0
+      node.rightChild!.animator().alphaValue = 1.0
+          
+      node.setLinkNodesAlpha(alpha: 1.0, relation: .no_parent)
+    }
+    
+    animationHandler.addAnimation(animation: animation1)
+    animationHandler.addAnimation(animation: animation2)
   }
 
   private func deleteNode(identifier: NodeIdentification) {
     let node = find(identifier: identifier)
     
+    // Set the nodes key to be nil
     node.key = nil
-            
-    // Fade out the connection nodes and the children
-    NSAnimationContext.runAnimationGroup({ context in
-      context.duration = 2
-      context.allowsImplicitAnimation = true
-      
+    
+    // Fade out the connection nodes and the children, ensure that the node is black
+    var animation1 = AnimationGroup()
+    animation1.duration = 1
+    animation1.function = {
       node.animator().color = .black
                     
       node.leftChild!.animator().alphaValue = 0.0
@@ -334,77 +343,74 @@ class TreeScene : NSView
       node.setLinkNodesAlpha(alpha: 0.0, relation: .no_parent)
             
       self.layoutSubtreeIfNeeded()
-      
-    }, completionHandler: {
+    }
+    // Delete the children
+    animation1.completion = {
       node.leftChild = nil
       node.rightChild = nil
+    }
+    
+    // Recreate the depth tree and adjacency constraints to move nodes to their new position
+    var animation2 = AnimationGroup()
+    animation2.duration = 1
+    animation2.function = {
       self.createDepthTable()
-
-      NSAnimationContext.runAnimationGroup({ context in
-        context.duration = 2
-        context.allowsImplicitAnimation = true
-
-        self.addAdjacencyConstraints()
-        
-        for link in self.rootNode.linkNodes {
-          link.needsLayout = true
-        }
-        
-        self.layoutSubtreeIfNeeded()
-        
-      }, completionHandler: {
-        
-      })
-    })
-
-
-    // set the node's key to be nil and delete the children
-    node.key = nil
+      self.addAdjacencyConstraints()
+            
+      self.layoutSubtreeIfNeeded()
+    }
+    
+    animationHandler.addAnimation(animation: animation1)
+    animationHandler.addAnimation(animation: animation2)
   }
 
   private func colourChange(identifiers : [NodeIdentification], colours : [(new : Colour, old : Colour)], reverse : Bool) {
     assert(identifiers.count == colours.count)
+    
+    var animation = AnimationGroup()
+    animation.duration = 1
+    animation.function = {
+      for i in 0...identifiers.count-1 {
+        let node = self.find(identifier: identifiers[i])
 
-    for i in 0...identifiers.count-1 {
-      let node = find(identifier: identifiers[i])
+        switch !reverse ? colours[i].new : colours[i].old {
+        case .black:
+          node.animator().color = .black
+          break
 
-      switch !reverse ? colours[i].new : colours[i].old {
-      case .black:
-        node.color = .black
-        break
-
-      case .red:
-        node.color = .red
-        break
+        case .red:
+          node.animator().color = .red
+          break
+        }
       }
     }
+    
+    animationHandler.addAnimation(animation: animation)
   }
   
   func rotateUp(identifier: NodeIdentification) {
     let n = find(identifier: identifier)
 
-    // Get the importation nodes
+    // Get the important relation nodes
     let p = n.parent!
     let grandParent = p.parent // could be the Tree (Not a node)
     let c = n[!n.parentRelation]! // the interior child
     
+    let pRelation = n.parentRelation
+    let gRelation = p.parentRelation
+    
     // Fade out the connection nodes of g->p->n->c
-    NSAnimationContext.runAnimationGroup({ context in
-      context.duration = 1
-      context.allowsImplicitAnimation = true
-      
+    var animation1 = AnimationGroup()
+    animation1.duration = 1
+    animation1.function = {
       grandParent?.setLinkNodesAlpha(alpha: 0.0, relation: p.parentRelation)
       p.setLinkNodesAlpha(alpha: 0.0, relation: n.parentRelation)
       n.setLinkNodesAlpha(alpha: 0.0, relation: !n.parentRelation)
       
       self.layoutSubtreeIfNeeded()
-      
-    }, completionHandler: {
-
-      // Reassign the new relations
-      let pRelation = n.parentRelation
-      let gRelation = p.parentRelation
-      
+    }
+    // Reassign the new relations
+    animation1.completion = {
       grandParent?[gRelation] = nil
       p[pRelation] = nil
       n[!pRelation] = nil
@@ -422,44 +428,37 @@ class TreeScene : NSView
       
       n[!pRelation] = p
       p[pRelation] = c
-
-      // Move (ALL nodes of the tree to their new positions)
-      NSAnimationContext.runAnimationGroup({ context in
-        context.duration = 2
-        context.allowsImplicitAnimation = true
-        
-        self.createDepthTable()
-        self.addAdjacencyConstraints()
-        
-        // Fade in the connection nodes of g->n->p->c
-        grandParent?.setLinkNodesAlpha(alpha: 1.0, relation: p.parentRelation)
-        p.setLinkNodesAlpha(alpha: 1.0, relation: n.parentRelation)
-        n.setLinkNodesAlpha(alpha: 1.0, relation: !n.parentRelation)
-        
-        NSLayoutConstraint.deactivate(self.rootNodePositionConstraints)
-        self.rootNodePositionConstraints = [
-          self.rootNode.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: self.rootNodeDisplacement.x),
-          self.rootNode.topAnchor.constraint(equalTo: self.topAnchor, constant: self.rootNodeDisplacement.y),
-        ]
-        NSLayoutConstraint.activate(self.rootNodePositionConstraints)
-
-        self.layout()
-      }, completionHandler: {
-        // Fade in the connection nodes of g->n->p->c
-        NSAnimationContext.runAnimationGroup({ context in
-          context.duration = 1
-          context.allowsImplicitAnimation = true
-          
-          grandParent?.setLinkNodesAlpha(alpha: 1.0, relation: p.parentRelation)
-          p.setLinkNodesAlpha(alpha: 1.0, relation: n.parentRelation)
-          n.setLinkNodesAlpha(alpha: 1.0, relation: !n.parentRelation)
-        })
-      })
-
-    })
-
+    }
     
+    // Move (ALL nodes of the tree to their new positions)
+    var animation2 = AnimationGroup()
+    animation2.duration = 2
+    animation2.function = {
+      self.createDepthTable()
+      self.addAdjacencyConstraints()
+            
+      NSLayoutConstraint.deactivate(self.rootNodePositionConstraints)
+      self.rootNodePositionConstraints = [
+        self.rootNode.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: self.rootNodeDisplacement.x),
+        self.rootNode.topAnchor.constraint(equalTo: self.topAnchor, constant: self.rootNodeDisplacement.y),
+      ]
+      NSLayoutConstraint.activate(self.rootNodePositionConstraints)
+
+      self.layout()
+    }
+
+    // Fade in the connection nodes of g->n->p->c
+    var animation3 = AnimationGroup()
+    animation3.duration = 1
+    animation3.function = {
+      grandParent?.setLinkNodesAlpha(alpha: 1.0, relation: gRelation)
+      p.setLinkNodesAlpha(alpha: 1.0, relation: pRelation)
+      n.setLinkNodesAlpha(alpha: 1.0, relation: !pRelation)
+    }
     
+    animationHandler.addAnimation(animation: animation1)
+    animationHandler.addAnimation(animation: animation2)
+    animationHandler.addAnimation(animation: animation3)
   }
 
   func swapNodes(identifiers: [NodeIdentification]) {
@@ -482,13 +481,19 @@ class TreeScene : NSView
   
   @discardableResult
   func next() -> String {
+    animationRunning = true
     applyAnimation(animation: model.next())
+    animationHandler.runAnimations()
+    
     return stepDescription
   }
   
   @discardableResult
   func previous() -> String {
+    animationRunning = true
     reverseAnimation(animation: model.previous())
+    animationHandler.runAnimations()
+    
     return stepDescription
   }
 
@@ -513,8 +518,4 @@ class TreeScene : NSView
   func remove(key: Int) -> Bool {
     return model.remove(key: key)
   }
-
-
-  
-
 }

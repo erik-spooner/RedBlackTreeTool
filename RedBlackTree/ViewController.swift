@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import Combine
 
 class TreeViewController: NSViewController, NSTextFieldDelegate
 {
@@ -24,6 +25,8 @@ class TreeViewController: NSViewController, NSTextFieldDelegate
   private var stepDescriptionField : NSTextField!
   
   private var oldTouchPoint : NSPoint = NSPoint()
+  
+  private var receiver : AnyCancellable?
     
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -36,6 +39,7 @@ class TreeViewController: NSViewController, NSTextFieldDelegate
     treeScene.insert(key: 4)
     treeScene.insert(key: 9)
     treeScene.skip()
+    
     
     // Create the buttons
     nextButton = NSButton(title: "Next", target: self, action: #selector(self.next))
@@ -68,7 +72,6 @@ class TreeViewController: NSViewController, NSTextFieldDelegate
     interfaceStack.addArrangedSubview(inputField)
     interfaceStack.addArrangedSubview(insertButton)
     interfaceStack.addArrangedSubview(removeButton)
-//    interfaceStack.addArrangedSubview()
     
     interfaceStack.wantsLayer = true
     interfaceStack.layer?.backgroundColor = .black
@@ -102,6 +105,17 @@ class TreeViewController: NSViewController, NSTextFieldDelegate
     super.viewDidAppear()
     
     self.view.window!.backgroundColor = .gray
+    
+    // Disable the buttons when an animation is running
+    self.receiver = treeScene.animationPublisher.sink { value in
+      self.nextButton.isEnabled = !value
+      self.prevButton.isEnabled = !value
+      self.skipButton.isEnabled = !value
+    }
+  }
+  
+  override func viewDidDisappear() {
+    self.receiver = nil
   }
   
   func controlTextDidChange(_ obj: Notification) {
@@ -121,10 +135,12 @@ class TreeViewController: NSViewController, NSTextFieldDelegate
   
   @objc private func insert() {
     treeScene.insert(key: inputField.integerValue)
+    next()
   }
 
   @objc private func remove() {
     treeScene.remove(key: inputField.integerValue)
+    next()
   }
   
   @objc private func skip() {

@@ -217,6 +217,11 @@ class RedBlackNodeView : NSView
     linkNodes.append(Link(frame: frame, direction: true, key: key))
     linkNodes.append(Link(frame: frame, direction: false, key: key))
     
+    // If the key is nil hide the links
+    if key == nil {
+      setLinkNodesAlpha(alpha: 0.0, relation: .no_parent)
+    }
+    
     // Add the width and height Constraints
     var constraints = [
       self.widthAnchor.constraint(equalToConstant: nodeRadius * 2),
