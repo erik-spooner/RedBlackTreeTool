@@ -1,9 +1,7 @@
-//
-//  Utilities.swift
-//  RedBlackTreeTool
-//
-//  Created by Erik Spooner on 2022-02-25.
-//
+
+/// Convienence fuctions/operations for CGPoints/Vectors
+///
+///
 
 import Foundation
 
@@ -23,7 +21,7 @@ public func - (left: CGPoint, right: CGVector) -> CGPoint {
   return CGPoint(x: left.x - right.dx, y: left.y - right.dy)
 }
 
-public func += (left: inout CGPoint, right: CGPoint) {
+public func += (left: inout CGPoint, right: CGVector) {
   left = left + right
 }
 

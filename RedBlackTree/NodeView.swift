@@ -1,19 +1,20 @@
 //
-//  RedBlackNodeView.swift
-//  RedBlackTreeSUI
 //
-//  Created by Erik Spooner on 2022-09-01.
+//
 //
 
 import Foundation
 import AppKit
 
+/// NodeView is a subclass of a NSView that draws a
+///
+///
 
-class RedBlackNodeView : NSView
+class NodeView : NSView
 {
   
   // Red Black Information
-  var parent : RedBlackNodeView? = nil
+  var parent : NodeView? = nil
   var parentRelation : ParentRelation {
     get {
       // If the parent is a RedBlackNode
@@ -59,13 +60,13 @@ class RedBlackNodeView : NSView
     didSet { needsDisplay = true }
   }
   
-  // 
+  // Other NSViews related to the node
   var linkNodes : [Link]
   var spacer : NSView
   var label : NSTextField
   
   // Easy access for left and right child
-  var leftChild : RedBlackNodeView? {
+  var leftChild : NodeView? {
     willSet {
       leftChild?.parent = nil
       
@@ -93,7 +94,7 @@ class RedBlackNodeView : NSView
       }
     }
   }
-  var rightChild : RedBlackNodeView? {
+  var rightChild : NodeView? {
     willSet {
       rightChild?.parent = nil
       
@@ -121,8 +122,9 @@ class RedBlackNodeView : NSView
       }
     }
   }
-  /// Subscript operator for access to children
-  subscript(index: ParentRelation) -> RedBlackNodeView? {
+  
+  // Subscript operator for access to children
+  subscript(index: ParentRelation) -> NodeView? {
     get {
       switch index {
       case .left:
@@ -145,14 +147,17 @@ class RedBlackNodeView : NSView
     }
   }
 
-  private var horizontalSpacingConstant : CGFloat = 100
-  private var verticalSpacingConstant : CGFloat = 100
-  private var nodeRadius : CGFloat = 40
+  // class variables for the spacing and size fo the nodes
+  private static var horizontalSpacingConstant : CGFloat = 100
+  private static var verticalSpacingConstant : CGFloat = 100
+  private static var nodeRadius : CGFloat = 40
   
+  // Arrays to hold the different constraints for positioning the children and the links
   private var childrenPositionalConstraints : [[NSLayoutConstraint]] = [[NSLayoutConstraint]]()
   private var spacerConstraints : [NSLayoutConstraint] = [NSLayoutConstraint]()
   private var linkConstraints : [[NSLayoutConstraint]] = [[NSLayoutConstraint]]()
 
+  // Creates a new NodeView from a RedBlackNode, If the given node is nil, will create the appropriate visual for a nil node.
   init(modelNode : RedBlackNode?) {
     var text = "nil"
     self.color = NSColor.black
@@ -163,7 +168,7 @@ class RedBlackNodeView : NSView
     linkConstraints.append([NSLayoutConstraint]())
     linkConstraints.append([NSLayoutConstraint]())
 
-    spacer = NSView(frame: NSRect(x: 0, y: 0, width: nodeRadius * 2, height: nodeRadius * 2))
+    spacer = NSView(frame: NSRect(x: 0, y: 0, width: NodeView.nodeRadius * 2, height: NodeView.nodeRadius * 2))
     linkNodes = [Link]()
         
     // If the model exists
@@ -188,7 +193,7 @@ class RedBlackNodeView : NSView
     label.textColor = .black
     label.font = NSFont(descriptor: NSFontDescriptor(name: "Helvetica", size: 8), size: 20)
 
-    super.init(frame: NSRect(x: 0, y: 0, width: nodeRadius * 2, height: nodeRadius * 2))
+    super.init(frame: NSRect(x: 0, y: 0, width: NodeView.nodeRadius * 2, height: NodeView.nodeRadius * 2))
     
     // add the label as a sub view
     self.addSubview(label)
@@ -205,17 +210,17 @@ class RedBlackNodeView : NSView
 
     // add the constraints for the spacer
     spacerConstraints = [
-      spacer.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: verticalSpacingConstant),
+      spacer.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: NodeView.verticalSpacingConstant),
       spacer.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-      spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: horizontalSpacingConstant),
-      spacer.heightAnchor.constraint(equalToConstant: verticalSpacingConstant),
+      spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: NodeView.horizontalSpacingConstant),
+      spacer.heightAnchor.constraint(equalToConstant: NodeView.verticalSpacingConstant),
     ]
 
     NSLayoutConstraint.activate(spacerConstraints)
     
     // Add the links between the parent and children nodes
-    linkNodes.append(Link(frame: frame, direction: true, key: key))
-    linkNodes.append(Link(frame: frame, direction: false, key: key))
+    linkNodes.append(Link(frame: frame, direction: true))
+    linkNodes.append(Link(frame: frame, direction: false))
     
     // If the key is nil hide the links
     if key == nil {
@@ -224,8 +229,8 @@ class RedBlackNodeView : NSView
     
     // Add the width and height Constraints
     var constraints = [
-      self.widthAnchor.constraint(equalToConstant: nodeRadius * 2),
-      self.heightAnchor.constraint(equalToConstant: nodeRadius * 2),
+      self.widthAnchor.constraint(equalToConstant: NodeView.nodeRadius * 2),
+      self.heightAnchor.constraint(equalToConstant: NodeView.nodeRadius * 2),
     ]
 
     NSLayoutConstraint.activate(constraints)
@@ -277,8 +282,8 @@ class RedBlackNodeView : NSView
     }
     
     // Create and the children nodes
-    leftChild = RedBlackNodeView(modelNode: m.leftChild)
-    rightChild = RedBlackNodeView(modelNode: m.rightChild)
+    leftChild = NodeView(modelNode: m.leftChild)
+    rightChild = NodeView(modelNode: m.rightChild)
         
     // Recursively call on the children
     leftChild!.drawFromModel(model: m.leftChild)
@@ -335,18 +340,18 @@ class RedBlackNodeView : NSView
       // create and activate new positional constraints on the child
       childrenPositionalConstraints[relation] = relation == .left ?
         [
-          child.centerXAnchor.constraint(lessThanOrEqualTo: self.centerXAnchor, constant: -horizontalSpacingConstant),
-          child.centerXAnchor.constraint(greaterThanOrEqualTo: self.centerXAnchor, constant: -horizontalSpacingConstant),
+          child.centerXAnchor.constraint(lessThanOrEqualTo: self.centerXAnchor, constant: -NodeView.horizontalSpacingConstant),
+          child.centerXAnchor.constraint(greaterThanOrEqualTo: self.centerXAnchor, constant: -NodeView.horizontalSpacingConstant),
           spacer.leadingAnchor.constraint(equalTo: child.trailingAnchor),
         ]
         : [
-          child.centerXAnchor.constraint(greaterThanOrEqualTo: self.centerXAnchor, constant: horizontalSpacingConstant),
-          child.centerXAnchor.constraint(lessThanOrEqualTo: self.centerXAnchor, constant: horizontalSpacingConstant),
+          child.centerXAnchor.constraint(greaterThanOrEqualTo: self.centerXAnchor, constant: NodeView.horizontalSpacingConstant),
+          child.centerXAnchor.constraint(lessThanOrEqualTo: self.centerXAnchor, constant: NodeView.horizontalSpacingConstant),
           spacer.trailingAnchor.constraint(equalTo: child.leadingAnchor),
         ]
       
       childrenPositionalConstraints[relation].append(contentsOf: [
-        child.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: verticalSpacingConstant),
+        child.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: NodeView.verticalSpacingConstant),
       ])
       
       // The maximum X distance constraints on the children are lower priorty
@@ -359,58 +364,18 @@ class RedBlackNodeView : NSView
       linkConstraints[relation] = link.direction ? [
         link.topAnchor.constraint(equalTo: self.centerYAnchor),
         link.trailingAnchor.constraint(equalTo: self.centerXAnchor),
-        link.widthAnchor.constraint(equalTo: spacer.widthAnchor, multiplier: 0.5, constant: nodeRadius),
-        link.heightAnchor.constraint(equalToConstant: verticalSpacingConstant),
+        link.widthAnchor.constraint(equalTo: spacer.widthAnchor, multiplier: 0.5, constant: NodeView.nodeRadius),
+        link.heightAnchor.constraint(equalToConstant: NodeView.verticalSpacingConstant),
       ]
       : [
         link.topAnchor.constraint(equalTo: self.centerYAnchor),
         link.leadingAnchor.constraint(equalTo: self.centerXAnchor),
-        link.widthAnchor.constraint(equalTo: spacer.widthAnchor, multiplier: 0.5, constant: nodeRadius),
-        link.heightAnchor.constraint(equalToConstant: verticalSpacingConstant),
+        link.widthAnchor.constraint(equalTo: spacer.widthAnchor, multiplier: 0.5, constant: NodeView.nodeRadius),
+        link.heightAnchor.constraint(equalToConstant: NodeView.verticalSpacingConstant),
       ]
       
       NSLayoutConstraint.activate(linkConstraints[relation])
     }
   }
   
-}
-
-
-///
-/// A line drawn between a parent and child node
-///
-class Link : NSView {
-  var direction : Bool
-  let key : Int?
-    
-  init(frame : CGRect, direction : Bool, key : Int?) {
-    self.direction = direction
-    self.key = key
-    
-    super.init(frame: frame)
-            
-    self.translatesAutoresizingMaskIntoConstraints = false
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
-  override func draw(_ dirtyRect: NSRect) {
-    super.draw(dirtyRect)
-
-    let line = NSBezierPath()
-    if direction {
-      line.move(to: NSMakePoint(bounds.minX, bounds.minY))
-      line.line(to: NSMakePoint(bounds.maxX, bounds.maxY))
-    }
-    else {
-      line.move(to: NSMakePoint(bounds.minX, bounds.maxY))
-      line.line(to: NSMakePoint(bounds.maxX, bounds.minY))
-    }
-    line.lineWidth = 2
-    
-    NSColor.white.setStroke()
-    line.stroke()
-  }
 }

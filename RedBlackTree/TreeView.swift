@@ -9,9 +9,9 @@ import Foundation
 import AppKit
 import Combine
 
-class TreeScene : NSView
+class TreeView : NSView
 {
-  private var rootNode : RedBlackNodeView
+  private var rootNode : NodeView
   private var model : RedBlackTree
   
   private var adjacencyConstraints : [NSLayoutConstraint]
@@ -35,7 +35,8 @@ class TreeScene : NSView
   }
   
   private (set) var stepDescription : String = " "
-  var animationPublisher : PassthroughSubject<Bool, Never>
+  private (set) var animationPublisher : PassthroughSubject<Bool, Never>
+  private (set) var animationCompletionPublisher : PassthroughSubject<Bool, Never>
   
   private (set) var animationRunning : Bool = false {
     didSet {
@@ -46,7 +47,7 @@ class TreeScene : NSView
   private var animationHandlerReceiver : AnyCancellable?
   
   init() {
-    rootNode = RedBlackNodeView(modelNode: nil)
+    rootNode = NodeView(modelNode: nil)
     model = RedBlackTree()
     
     adjacencyConstraints = [NSLayoutConstraint]()
@@ -54,6 +55,7 @@ class TreeScene : NSView
     depthTable = [[NSView]]()
     
     animationPublisher = PassthroughSubject<Bool, Never>()
+    animationCompletionPublisher = PassthroughSubject<Bool, Never>()
 
     super.init(frame: NSRect(x: 0, y: 0, width: 500, height: 500))
     
@@ -69,7 +71,7 @@ class TreeScene : NSView
   func drawFromModel() {
     subviews.removeAll()
         
-    rootNode = RedBlackNodeView(modelNode: model.root)
+    rootNode = NodeView(modelNode: model.root)
     addSubview(rootNode)
     
     rootNode.drawFromModel(model: model.root)
@@ -212,9 +214,9 @@ class TreeScene : NSView
   }
 
   // Given the identifier for a node return the node itself
-  private func find(identifier: NodeIdentification) -> RedBlackNodeView {
+  private func find(identifier: NodeIdentification) -> NodeView {
     var key : Int
-    var node : RedBlackNodeView
+    var node : NodeView
 
     if let parentKey = identifier.parent {
       // The node is nil but the parent exists
@@ -284,8 +286,8 @@ class TreeScene : NSView
     node.key = key
 
     // create  nil children
-    node.leftChild = RedBlackNodeView(modelNode: nil)
-    node.rightChild = RedBlackNodeView(modelNode: nil)
+    node.leftChild = NodeView(modelNode: nil)
+    node.rightChild = NodeView(modelNode: nil)
     
     node.leftChild!.alphaValue = 0.0
     node.rightChild!.alphaValue = 0.0
@@ -482,8 +484,15 @@ class TreeScene : NSView
   @discardableResult
   func next() -> String {
     animationRunning = true
-    applyAnimation(animation: model.next())
-    animationHandler.runAnimations()
+        
+    if let animation = model.next() {
+      applyAnimation(animation: animation)
+      animationHandler.runAnimations()
+    }
+    else {
+      animationCompletionPublisher.send(true)
+      animationRunning = false
+    }
     
     return stepDescription
   }
@@ -491,9 +500,16 @@ class TreeScene : NSView
   @discardableResult
   func previous() -> String {
     animationRunning = true
-    reverseAnimation(animation: model.previous())
-    animationHandler.runAnimations()
-    
+
+    if let animation = model.previous() {
+      applyAnimation(animation: animation)
+      animationHandler.runAnimations()
+    }
+    else {
+      animationCompletionPublisher.send(true)
+      animationRunning = false
+    }
+
     return stepDescription
   }
 

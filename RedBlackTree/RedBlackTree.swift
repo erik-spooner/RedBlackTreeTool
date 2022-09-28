@@ -1,8 +1,5 @@
 //
-//  RedBlackTree.swift
-//  RedBlackTree
 //
-//  Created by Erik Spooner on 2021-12-31.
 //
 
 import Foundation
@@ -14,21 +11,21 @@ class RedBlackTree
   private var animationQueue : [AnimationType] = [AnimationType]()
   private var animationIndex : Int = 0
   
-  func next() -> AnimationType {
-    guard !animationQueue.isEmpty else {
-      return AnimationType.text(description: "No animation is playing")
+  func next() -> AnimationType? {
+    guard !animationQueue.isEmpty && animationIndex < animationQueue.count else {
+      return nil
     }
 
-    // play the animation
+    // return the current animation
     let animation = animationQueue[animationIndex]
-    animationIndex = min(animationIndex + 1, animationQueue.count - 1)
+    animationIndex = min(animationIndex + 1, animationQueue.count)
     
     return animation
   }
   
-  func previous() -> AnimationType  {
+  func previous() -> AnimationType?  {
     guard !animationQueue.isEmpty else {
-      return AnimationType.text(description: "No animation is playing")
+      return nil
     }
     
     animationIndex = max(0, animationIndex - 1)

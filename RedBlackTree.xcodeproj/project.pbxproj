@@ -14,11 +14,12 @@
 		031D09D728C9389A001AE714 /* RedBlackTreeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031D09D628C9389A001AE714 /* RedBlackTreeTests.swift */; };
 		031D09E128C9389A001AE714 /* RedBlackTreeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031D09E028C9389A001AE714 /* RedBlackTreeUITests.swift */; };
 		031D09E328C9389A001AE714 /* RedBlackTreeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031D09E228C9389A001AE714 /* RedBlackTreeUITestsLaunchTests.swift */; };
-		031D09F028C95F62001AE714 /* TreeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031D09EF28C95F62001AE714 /* TreeScene.swift */; };
+		031D09F028C95F62001AE714 /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031D09EF28C95F62001AE714 /* TreeView.swift */; };
 		031D09F228C95FAB001AE714 /* RedBlackTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031D09F128C95FAB001AE714 /* RedBlackTree.swift */; };
 		031D09F428C95FC8001AE714 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031D09F328C95FC8001AE714 /* Utilities.swift */; };
-		03474CF628C9624B00A32F40 /* RedBlackNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03474CF528C9624B00A32F40 /* RedBlackNodeView.swift */; };
-		03E7A42D28D3A9CA00CB8C16 /* AnimationUtilites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E7A42C28D3A9CA00CB8C16 /* AnimationUtilites.swift */; };
+		03474CF628C9624B00A32F40 /* NodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03474CF528C9624B00A32F40 /* NodeView.swift */; };
+		039B56AB28E24169000AF44C /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039B56AA28E24169000AF44C /* LinkView.swift */; };
+		03E7A42D28D3A9CA00CB8C16 /* AnimationUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E7A42C28D3A9CA00CB8C16 /* AnimationUtilities.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,11 +51,13 @@
 		031D09DC28C9389A001AE714 /* RedBlackTreeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RedBlackTreeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		031D09E028C9389A001AE714 /* RedBlackTreeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedBlackTreeUITests.swift; sourceTree = "<group>"; };
 		031D09E228C9389A001AE714 /* RedBlackTreeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedBlackTreeUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		031D09EF28C95F62001AE714 /* TreeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeScene.swift; sourceTree = "<group>"; };
+		031D09EF28C95F62001AE714 /* TreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeView.swift; sourceTree = "<group>"; };
 		031D09F128C95FAB001AE714 /* RedBlackTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedBlackTree.swift; sourceTree = "<group>"; };
 		031D09F328C95FC8001AE714 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
-		03474CF528C9624B00A32F40 /* RedBlackNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedBlackNodeView.swift; sourceTree = "<group>"; };
-		03E7A42C28D3A9CA00CB8C16 /* AnimationUtilites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationUtilites.swift; sourceTree = "<group>"; };
+		03474CF528C9624B00A32F40 /* NodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeView.swift; sourceTree = "<group>"; };
+		037502E628D8D4FC00773A6A /* ReadMe.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ReadMe.md; sourceTree = "<group>"; };
+		039B56AA28E24169000AF44C /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
+		03E7A42C28D3A9CA00CB8C16 /* AnimationUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationUtilities.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,16 +108,18 @@
 		031D09C328C93899001AE714 /* RedBlackTree */ = {
 			isa = PBXGroup;
 			children = (
-				03474CF528C9624B00A32F40 /* RedBlackNodeView.swift */,
 				031D09C428C93899001AE714 /* AppDelegate.swift */,
 				031D09C628C93899001AE714 /* ViewController.swift */,
-				031D09EF28C95F62001AE714 /* TreeScene.swift */,
+				031D09EF28C95F62001AE714 /* TreeView.swift */,
+				03474CF528C9624B00A32F40 /* NodeView.swift */,
+				039B56AA28E24169000AF44C /* LinkView.swift */,
 				031D09F128C95FAB001AE714 /* RedBlackTree.swift */,
-				03E7A42C28D3A9CA00CB8C16 /* AnimationUtilites.swift */,
+				03E7A42C28D3A9CA00CB8C16 /* AnimationUtilities.swift */,
 				031D09F328C95FC8001AE714 /* Utilities.swift */,
 				031D09C828C9389A001AE714 /* Assets.xcassets */,
 				031D09CA28C9389A001AE714 /* Main.storyboard */,
 				031D09CD28C9389A001AE714 /* RedBlackTree.entitlements */,
+				037502E628D8D4FC00773A6A /* ReadMe.md */,
 			);
 			path = RedBlackTree;
 			sourceTree = "<group>";
@@ -266,9 +271,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03474CF628C9624B00A32F40 /* RedBlackNodeView.swift in Sources */,
-				031D09F028C95F62001AE714 /* TreeScene.swift in Sources */,
-				03E7A42D28D3A9CA00CB8C16 /* AnimationUtilites.swift in Sources */,
+				03474CF628C9624B00A32F40 /* NodeView.swift in Sources */,
+				031D09F028C95F62001AE714 /* TreeView.swift in Sources */,
+				039B56AB28E24169000AF44C /* LinkView.swift in Sources */,
+				03E7A42D28D3A9CA00CB8C16 /* AnimationUtilities.swift in Sources */,
 				031D09F228C95FAB001AE714 /* RedBlackTree.swift in Sources */,
 				031D09C728C93899001AE714 /* ViewController.swift in Sources */,
 				031D09F428C95FC8001AE714 /* Utilities.swift in Sources */,
