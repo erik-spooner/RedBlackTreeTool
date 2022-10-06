@@ -88,6 +88,7 @@
 		031D09B828C93898001AE714 = {
 			isa = PBXGroup;
 			children = (
+				037502E628D8D4FC00773A6A /* ReadMe.md */,
 				031D09C328C93899001AE714 /* RedBlackTree */,
 				031D09D528C9389A001AE714 /* RedBlackTreeTests */,
 				031D09DF28C9389A001AE714 /* RedBlackTreeUITests */,
@@ -119,7 +120,6 @@
 				031D09C828C9389A001AE714 /* Assets.xcassets */,
 				031D09CA28C9389A001AE714 /* Main.storyboard */,
 				031D09CD28C9389A001AE714 /* RedBlackTree.entitlements */,
-				037502E628D8D4FC00773A6A /* ReadMe.md */,
 			);
 			path = RedBlackTree;
 			sourceTree = "<group>";

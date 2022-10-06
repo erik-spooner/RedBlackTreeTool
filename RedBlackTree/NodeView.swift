@@ -304,8 +304,7 @@ class NodeView : NSView
     rightChild?.addToDepthTable(depthTable: &depthTable, depth: depth + 1)
   }
   
-  func setLinkNodesAlpha(alpha : Double, relation : ParentRelation) {
-    
+  func setLinkNodesAlpha(alpha : Double, relation : ParentRelation) { 
     if relation != .no_parent {
       linkNodes[relation].animator().alphaValue = alpha
     }

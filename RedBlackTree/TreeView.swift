@@ -417,10 +417,12 @@ class TreeView : NSView
       p[pRelation] = nil
       n[!pRelation] = nil
 
+      // if the grandparent exists assign the it to be the new parent of the node
       if let g = grandParent {
         g[gRelation] = n
       }
       else {
+        // if the grandparent does not exist assign the node to be the root
         self.rootNode = n
         self.addSubview(n)
         
@@ -471,6 +473,7 @@ class TreeView : NSView
     
     highlight(identifiers: identifiers)
       
+    // swap the keys of the two nodes
     let keyA = nodeA.key
     nodeA.key = nodeB.key
     nodeB.key = keyA
